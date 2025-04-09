@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import TestDriveForm from "@/components/test-drive-form";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_user/")({
   component: App,
 });
 

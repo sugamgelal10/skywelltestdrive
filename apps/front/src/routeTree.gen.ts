@@ -11,24 +11,20 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as VerifyImport } from './routes/verify'
-import { Route as SucessImport } from './routes/sucess'
+import { Route as LoginImport } from './routes/login'
 import { Route as AdminImport } from './routes/admin'
-import { Route as IndexImport } from './routes/index'
+import { Route as UserImport } from './routes/_user'
 import { Route as AdminIndexImport } from './routes/admin/index'
+import { Route as UserIndexImport } from './routes/_user/index'
 import { Route as AdminRegistrationsImport } from './routes/admin/registrations'
+import { Route as UserVerifyImport } from './routes/_user/verify'
+import { Route as UserSucessImport } from './routes/_user/sucess'
 
 // Create/Update Routes
 
-const VerifyRoute = VerifyImport.update({
-  id: '/verify',
-  path: '/verify',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const SucessRoute = SucessImport.update({
-  id: '/sucess',
-  path: '/sucess',
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -38,9 +34,8 @@ const AdminRoute = AdminImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const UserRoute = UserImport.update({
+  id: '/_user',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -50,21 +45,39 @@ const AdminIndexRoute = AdminIndexImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
+const UserIndexRoute = UserIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UserRoute,
+} as any)
+
 const AdminRegistrationsRoute = AdminRegistrationsImport.update({
   id: '/registrations',
   path: '/registrations',
   getParentRoute: () => AdminRoute,
 } as any)
 
+const UserVerifyRoute = UserVerifyImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const UserSucessRoute = UserSucessImport.update({
+  id: '/sucess',
+  path: '/sucess',
+  getParentRoute: () => UserRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+    '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof UserImport
       parentRoute: typeof rootRoute
     }
     '/admin': {
@@ -74,19 +87,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
-    '/sucess': {
-      id: '/sucess'
-      path: '/sucess'
-      fullPath: '/sucess'
-      preLoaderRoute: typeof SucessImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/verify': {
-      id: '/verify'
+    '/_user/sucess': {
+      id: '/_user/sucess'
+      path: '/sucess'
+      fullPath: '/sucess'
+      preLoaderRoute: typeof UserSucessImport
+      parentRoute: typeof UserImport
+    }
+    '/_user/verify': {
+      id: '/_user/verify'
       path: '/verify'
       fullPath: '/verify'
-      preLoaderRoute: typeof VerifyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof UserVerifyImport
+      parentRoute: typeof UserImport
     }
     '/admin/registrations': {
       id: '/admin/registrations'
@@ -94,6 +114,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/registrations'
       preLoaderRoute: typeof AdminRegistrationsImport
       parentRoute: typeof AdminImport
+    }
+    '/_user/': {
+      id: '/_user/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof UserIndexImport
+      parentRoute: typeof UserImport
     }
     '/admin/': {
       id: '/admin/'
@@ -106,6 +133,20 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
+
+interface UserRouteChildren {
+  UserSucessRoute: typeof UserSucessRoute
+  UserVerifyRoute: typeof UserVerifyRoute
+  UserIndexRoute: typeof UserIndexRoute
+}
+
+const UserRouteChildren: UserRouteChildren = {
+  UserSucessRoute: UserSucessRoute,
+  UserVerifyRoute: UserVerifyRoute,
+  UserIndexRoute: UserIndexRoute,
+}
+
+const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
 
 interface AdminRouteChildren {
   AdminRegistrationsRoute: typeof AdminRegistrationsRoute
@@ -120,66 +161,73 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '': typeof UserRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
-  '/sucess': typeof SucessRoute
-  '/verify': typeof VerifyRoute
+  '/login': typeof LoginRoute
+  '/sucess': typeof UserSucessRoute
+  '/verify': typeof UserVerifyRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
+  '/': typeof UserIndexRoute
   '/admin/': typeof AdminIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/sucess': typeof SucessRoute
-  '/verify': typeof VerifyRoute
+  '/login': typeof LoginRoute
+  '/sucess': typeof UserSucessRoute
+  '/verify': typeof UserVerifyRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
+  '/': typeof UserIndexRoute
   '/admin': typeof AdminIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/_user': typeof UserRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
-  '/sucess': typeof SucessRoute
-  '/verify': typeof VerifyRoute
+  '/login': typeof LoginRoute
+  '/_user/sucess': typeof UserSucessRoute
+  '/_user/verify': typeof UserVerifyRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
+  '/_user/': typeof UserIndexRoute
   '/admin/': typeof AdminIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
+    | ''
     | '/admin'
+    | '/login'
     | '/sucess'
     | '/verify'
     | '/admin/registrations'
+    | '/'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sucess' | '/verify' | '/admin/registrations' | '/admin'
+  to: '/login' | '/sucess' | '/verify' | '/admin/registrations' | '/' | '/admin'
   id:
     | '__root__'
-    | '/'
+    | '/_user'
     | '/admin'
-    | '/sucess'
-    | '/verify'
+    | '/login'
+    | '/_user/sucess'
+    | '/_user/verify'
     | '/admin/registrations'
+    | '/_user/'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  UserRoute: typeof UserRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
-  SucessRoute: typeof SucessRoute
-  VerifyRoute: typeof VerifyRoute
+  LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  UserRoute: UserRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
-  SucessRoute: SucessRoute,
-  VerifyRoute: VerifyRoute,
+  LoginRoute: LoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -192,14 +240,18 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
+        "/_user",
         "/admin",
-        "/sucess",
-        "/verify"
+        "/login"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_user": {
+      "filePath": "_user.tsx",
+      "children": [
+        "/_user/sucess",
+        "/_user/verify",
+        "/_user/"
+      ]
     },
     "/admin": {
       "filePath": "admin.tsx",
@@ -208,15 +260,24 @@ export const routeTree = rootRoute
         "/admin/"
       ]
     },
-    "/sucess": {
-      "filePath": "sucess.tsx"
+    "/login": {
+      "filePath": "login.tsx"
     },
-    "/verify": {
-      "filePath": "verify.tsx"
+    "/_user/sucess": {
+      "filePath": "_user/sucess.tsx",
+      "parent": "/_user"
+    },
+    "/_user/verify": {
+      "filePath": "_user/verify.tsx",
+      "parent": "/_user"
     },
     "/admin/registrations": {
       "filePath": "admin/registrations.tsx",
       "parent": "/admin"
+    },
+    "/_user/": {
+      "filePath": "_user/index.tsx",
+      "parent": "/_user"
     },
     "/admin/": {
       "filePath": "admin/index.tsx",
