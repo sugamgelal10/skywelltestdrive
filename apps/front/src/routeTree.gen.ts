@@ -10,229 +10,235 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
-import { Route as AdminImport } from './routes/admin'
-import { Route as UserImport } from './routes/_user'
-import { Route as AdminIndexImport } from './routes/admin/index'
-import { Route as UserIndexImport } from './routes/_user/index'
-import { Route as AdminRegistrationsImport } from './routes/admin/registrations'
-import { Route as UserVerifyImport } from './routes/_user/verify'
-import { Route as UserSucessImport } from './routes/_user/sucess'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as LoginImport } from "./routes/login";
+import { Route as AdminImport } from "./routes/admin";
+import { Route as UserImport } from "./routes/_user";
+import { Route as AdminIndexImport } from "./routes/admin/index";
+import { Route as UserIndexImport } from "./routes/_user/index";
+import { Route as AdminRegistrationsImport } from "./routes/admin/registrations";
+import { Route as UserVerifyImport } from "./routes/_user/verify";
+import { Route as UserSucessImport } from "./routes/_user/sucess";
 
 // Create/Update Routes
 
 const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AdminRoute = AdminImport.update({
-  id: '/admin',
-  path: '/admin',
+  id: "/admin",
+  path: "/admin",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const UserRoute = UserImport.update({
-  id: '/_user',
+  id: "/_user",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AdminIndexRoute = AdminIndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => AdminRoute,
-} as any)
+} as any);
 
 const UserIndexRoute = UserIndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => UserRoute,
-} as any)
+} as any);
 
 const AdminRegistrationsRoute = AdminRegistrationsImport.update({
-  id: '/registrations',
-  path: '/registrations',
+  id: "/registrations",
+  path: "/registrations",
   getParentRoute: () => AdminRoute,
-} as any)
+} as any);
 
 const UserVerifyRoute = UserVerifyImport.update({
-  id: '/verify',
-  path: '/verify',
+  id: "/verify",
+  path: "/verify",
   getParentRoute: () => UserRoute,
-} as any)
+} as any);
 
 const UserSucessRoute = UserSucessImport.update({
-  id: '/sucess',
-  path: '/sucess',
+  id: "/sucess",
+  path: "/sucess",
   getParentRoute: () => UserRoute,
-} as any)
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/_user': {
-      id: '/_user'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof UserImport
-      parentRoute: typeof rootRoute
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminImport
-      parentRoute: typeof rootRoute
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/_user/sucess': {
-      id: '/_user/sucess'
-      path: '/sucess'
-      fullPath: '/sucess'
-      preLoaderRoute: typeof UserSucessImport
-      parentRoute: typeof UserImport
-    }
-    '/_user/verify': {
-      id: '/_user/verify'
-      path: '/verify'
-      fullPath: '/verify'
-      preLoaderRoute: typeof UserVerifyImport
-      parentRoute: typeof UserImport
-    }
-    '/admin/registrations': {
-      id: '/admin/registrations'
-      path: '/registrations'
-      fullPath: '/admin/registrations'
-      preLoaderRoute: typeof AdminRegistrationsImport
-      parentRoute: typeof AdminImport
-    }
-    '/_user/': {
-      id: '/_user/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof UserIndexImport
-      parentRoute: typeof UserImport
-    }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexImport
-      parentRoute: typeof AdminImport
-    }
+    "/_user": {
+      id: "/_user";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof UserImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/admin": {
+      id: "/admin";
+      path: "/admin";
+      fullPath: "/admin";
+      preLoaderRoute: typeof AdminImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/login": {
+      id: "/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_user/sucess": {
+      id: "/_user/sucess";
+      path: "/sucess";
+      fullPath: "/sucess";
+      preLoaderRoute: typeof UserSucessImport;
+      parentRoute: typeof UserImport;
+    };
+    "/_user/verify": {
+      id: "/_user/verify";
+      path: "/verify";
+      fullPath: "/verify";
+      preLoaderRoute: typeof UserVerifyImport;
+      parentRoute: typeof UserImport;
+    };
+    "/admin/registrations": {
+      id: "/admin/registrations";
+      path: "/registrations";
+      fullPath: "/admin/registrations";
+      preLoaderRoute: typeof AdminRegistrationsImport;
+      parentRoute: typeof AdminImport;
+    };
+    "/_user/": {
+      id: "/_user/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof UserIndexImport;
+      parentRoute: typeof UserImport;
+    };
+    "/admin/": {
+      id: "/admin/";
+      path: "/";
+      fullPath: "/admin/";
+      preLoaderRoute: typeof AdminIndexImport;
+      parentRoute: typeof AdminImport;
+    };
   }
 }
 
 // Create and export the route tree
 
 interface UserRouteChildren {
-  UserSucessRoute: typeof UserSucessRoute
-  UserVerifyRoute: typeof UserVerifyRoute
-  UserIndexRoute: typeof UserIndexRoute
+  UserSucessRoute: typeof UserSucessRoute;
+  UserVerifyRoute: typeof UserVerifyRoute;
+  UserIndexRoute: typeof UserIndexRoute;
 }
 
 const UserRouteChildren: UserRouteChildren = {
   UserSucessRoute: UserSucessRoute,
   UserVerifyRoute: UserVerifyRoute,
   UserIndexRoute: UserIndexRoute,
-}
+};
 
-const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
+const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren);
 
 interface AdminRouteChildren {
-  AdminRegistrationsRoute: typeof AdminRegistrationsRoute
-  AdminIndexRoute: typeof AdminIndexRoute
+  AdminRegistrationsRoute: typeof AdminRegistrationsRoute;
+  AdminIndexRoute: typeof AdminIndexRoute;
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminRegistrationsRoute: AdminRegistrationsRoute,
   AdminIndexRoute: AdminIndexRoute,
-}
+};
 
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren);
 
 export interface FileRoutesByFullPath {
-  '': typeof UserRouteWithChildren
-  '/admin': typeof AdminRouteWithChildren
-  '/login': typeof LoginRoute
-  '/sucess': typeof UserSucessRoute
-  '/verify': typeof UserVerifyRoute
-  '/admin/registrations': typeof AdminRegistrationsRoute
-  '/': typeof UserIndexRoute
-  '/admin/': typeof AdminIndexRoute
+  "": typeof UserRouteWithChildren;
+  "/admin": typeof AdminRouteWithChildren;
+  "/login": typeof LoginRoute;
+  "/sucess": typeof UserSucessRoute;
+  "/verify": typeof UserVerifyRoute;
+  "/admin/registrations": typeof AdminRegistrationsRoute;
+  "/": typeof UserIndexRoute;
+  "/admin/": typeof AdminIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  '/login': typeof LoginRoute
-  '/sucess': typeof UserSucessRoute
-  '/verify': typeof UserVerifyRoute
-  '/admin/registrations': typeof AdminRegistrationsRoute
-  '/': typeof UserIndexRoute
-  '/admin': typeof AdminIndexRoute
+  "/login": typeof LoginRoute;
+  "/sucess": typeof UserSucessRoute;
+  "/verify": typeof UserVerifyRoute;
+  "/admin/registrations": typeof AdminRegistrationsRoute;
+  "/": typeof UserIndexRoute;
+  "/admin": typeof AdminIndexRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/_user': typeof UserRouteWithChildren
-  '/admin': typeof AdminRouteWithChildren
-  '/login': typeof LoginRoute
-  '/_user/sucess': typeof UserSucessRoute
-  '/_user/verify': typeof UserVerifyRoute
-  '/admin/registrations': typeof AdminRegistrationsRoute
-  '/_user/': typeof UserIndexRoute
-  '/admin/': typeof AdminIndexRoute
+  __root__: typeof rootRoute;
+  "/_user": typeof UserRouteWithChildren;
+  "/admin": typeof AdminRouteWithChildren;
+  "/login": typeof LoginRoute;
+  "/_user/sucess": typeof UserSucessRoute;
+  "/_user/verify": typeof UserVerifyRoute;
+  "/admin/registrations": typeof AdminRegistrationsRoute;
+  "/_user/": typeof UserIndexRoute;
+  "/admin/": typeof AdminIndexRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | ''
-    | '/admin'
-    | '/login'
-    | '/sucess'
-    | '/verify'
-    | '/admin/registrations'
-    | '/'
-    | '/admin/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/sucess' | '/verify' | '/admin/registrations' | '/' | '/admin'
+    | ""
+    | "/admin"
+    | "/login"
+    | "/sucess"
+    | "/verify"
+    | "/admin/registrations"
+    | "/"
+    | "/admin/";
+  fileRoutesByTo: FileRoutesByTo;
+  to:
+    | "/login"
+    | "/sucess"
+    | "/verify"
+    | "/admin/registrations"
+    | "/"
+    | "/admin";
   id:
-    | '__root__'
-    | '/_user'
-    | '/admin'
-    | '/login'
-    | '/_user/sucess'
-    | '/_user/verify'
-    | '/admin/registrations'
-    | '/_user/'
-    | '/admin/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/_user"
+    | "/admin"
+    | "/login"
+    | "/_user/sucess"
+    | "/_user/verify"
+    | "/admin/registrations"
+    | "/_user/"
+    | "/admin/";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  UserRoute: typeof UserRouteWithChildren
-  AdminRoute: typeof AdminRouteWithChildren
-  LoginRoute: typeof LoginRoute
+  UserRoute: typeof UserRouteWithChildren;
+  AdminRoute: typeof AdminRouteWithChildren;
+  LoginRoute: typeof LoginRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   UserRoute: UserRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
