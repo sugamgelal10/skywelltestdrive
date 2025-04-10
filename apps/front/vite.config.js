@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
     preview: {
       host: "0.0.0.0",
       port: 4173,
-      allowedHosts: ["skywelltestdrive.kcanjan.com.np"],
+      allowedHosts: ["testdrive.gmotors.com.np"],
     },
   };
 });
