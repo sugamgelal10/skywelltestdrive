@@ -72,7 +72,7 @@ export default function TestDriveForm() {
   const createTestDrive = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
       Fetch({
-        url: "/test-drive",
+        url: "/test-drive-registration",
         method: "POST",
         data: data,
       });

@@ -56,7 +56,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Fetch } from "@/lib/fetcher";
 
 // Define the type for our registration data
@@ -77,69 +77,69 @@ const formSchema = z.object({
   status: z.enum(["pending", "approved", "completed", "cancelled"]),
 });
 
-// Sample data
-const data: Registration[] = [
-  {
-    id: "REG-001",
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "+1234567890",
-    vehicle: "SUV",
-    date: new Date(2023, 5, 15),
-    location: "Berlin Dealership",
-    address: "Paris, France",
-    status: "approved",
-  },
-  {
-    id: "REG-002",
-    firstName: "Jane",
-    lastName: "Smith",
-    email: "jane.smith@example.com",
-    phone: "+0987654321",
-    vehicle: "Sedan",
-    date: new Date(2023, 5, 20),
-    location: "Munich Center",
-    address: "Rome, Italy",
-    status: "pending",
-  },
-  {
-    id: "REG-003",
-    firstName: "Mike",
-    lastName: "Johnson",
-    email: "mike.j@example.com",
-    phone: "+1122334455",
-    vehicle: "Luxury",
-    date: new Date(2023, 4, 10),
-    location: "Frankfurt Main",
-    address: "Barcelona, Spain",
-    status: "completed",
-  },
-  {
-    id: "REG-004",
-    firstName: "Sarah",
-    lastName: "Williams",
-    email: "sarah.w@example.com",
-    phone: "+5566778899",
-    vehicle: "Electric",
-    date: new Date(2023, 6, 5),
-    location: "Hamburg Port",
-    address: "Amsterdam, Netherlands",
-    status: "cancelled",
-  },
-  {
-    id: "REG-005",
-    firstName: "Robert",
-    lastName: "Brown",
-    email: "robert.b@example.com",
-    phone: "+1231231234",
-    vehicle: "Compact",
-    date: new Date(2023, 6, 12),
-    location: "Vienna Central",
-    address: "Prague, Czech Republic",
-    status: "pending",
-  },
-];
+// // // Sample data
+// const data: Registration[] = [
+//   {
+//     id: "REG-001",
+//     firstName: "John",
+//     lastName: "Doe",
+//     email: "john.doe@example.com",
+//     phone: "+1234567890",
+//     vehicle: "SUV",
+//     date: new Date(2023, 5, 15),
+//     location: "Berlin Dealership",
+//     address: "Paris, France",
+//     status: "approved",
+//   },
+//   {
+//     id: "REG-002",
+//     firstName: "Jane",
+//     lastName: "Smith",
+//     email: "jane.smith@example.com",
+//     phone: "+0987654321",
+//     vehicle: "Sedan",
+//     date: new Date(2023, 5, 20),
+//     location: "Munich Center",
+//     address: "Rome, Italy",
+//     status: "pending",
+//   },
+//   {
+//     id: "REG-003",
+//     firstName: "Mike",
+//     lastName: "Johnson",
+//     email: "mike.j@example.com",
+//     phone: "+1122334455",
+//     vehicle: "Luxury",
+//     date: new Date(2023, 4, 10),
+//     location: "Frankfurt Main",
+//     address: "Barcelona, Spain",
+//     status: "completed",
+//   },
+//   {
+//     id: "REG-004",
+//     firstName: "Sarah",
+//     lastName: "Williams",
+//     email: "sarah.w@example.com",
+//     phone: "+5566778899",
+//     vehicle: "Electric",
+//     date: new Date(2023, 6, 5),
+//     location: "Hamburg Port",
+//     address: "Amsterdam, Netherlands",
+//     status: "cancelled",
+//   },
+//   {
+//     id: "REG-005",
+//     firstName: "Robert",
+//     lastName: "Brown",
+//     email: "robert.b@example.com",
+//     phone: "+1231231234",
+//     vehicle: "Compact",
+//     date: new Date(2023, 6, 12),
+//     location: "Vienna Central",
+//     address: "Prague, Czech Republic",
+//     status: "pending",
+//   },
+// ];
 
 export function RegistrationsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -155,13 +155,26 @@ export function RegistrationsTable() {
       status: "pending",
     },
   });
-
+  const { data } = useQuery<Registration[]>({
+    queryKey: ["test-drive"],
+    queryFn: () =>
+      Fetch({
+        url: "/test-drive-registration",
+        method: "GET",
+      }),
+  });
   const updateStatus = useMutation({
-    mutationFn: (data: { id: string; status: string }) => {
+    mutationFn: ({
+      data,
+      id,
+    }: {
+      data: z.infer<typeof formSchema>;
+      id: string;
+    }) => {
       return Fetch({
-        url: `/registration/${data.id}`,
+        url: `/test-drive-registration/${id}`,
         method: "PATCH",
-        data: { status: data.status },
+        data: data,
       });
     },
     onSuccess: () => {
@@ -173,11 +186,17 @@ export function RegistrationsTable() {
   const onSubmit = (formData: z.infer<typeof formSchema>) => {
     if (!selectedRegistration) return;
 
-    updateStatus.mutate({
-      id: selectedRegistration.id,
-      status: formData.status,
-    });
+    updateStatus.mutate({ data: formData, id: selectedRegistration.id });
   };
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => {
+      return Fetch({
+        url: `/test-drive-registration/${id}`,
+        method: "DELETE",
+      });
+    },
+  });
 
   // Define the columns for our table
   const columns: ColumnDef<Registration>[] = [
@@ -270,7 +289,7 @@ export function RegistrationsTable() {
                     : "destructive"
             }
           >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
+            {status?.charAt(0).toUpperCase() + status?.slice(1)}
           </Badge>
         );
       },
@@ -300,7 +319,12 @@ export function RegistrationsTable() {
                 Change Status
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={() => {
+                  deleteMutation.mutate(registration.id);
+                }}
+              >
                 Delete registration
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -311,7 +335,7 @@ export function RegistrationsTable() {
   ];
 
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -342,6 +366,7 @@ export function RegistrationsTable() {
       );
     },
   });
+  if (!data) return <div className="w-full">No Test Drive</div>;
 
   return (
     <div className="space-y-4">

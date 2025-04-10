@@ -3,7 +3,9 @@ import { Mutex } from "async-mutex";
 import axios, { AxiosError } from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
 
-export const baseURL = process.env.BASE_URL;
+export const baseURL = process.env.VITE_BASE_URL;
+
+console.log(baseURL);
 
 const mutex = new Mutex();
 

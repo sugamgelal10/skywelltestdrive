@@ -72,7 +72,7 @@ function LoginForm() {
       <div className="text-xl text-center">
         Sign in to <br />
         <span className=" font-bold text-2xl bg-gradient-to-r from-red-600 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-          Eagle Eye Tech
+          Sky Well Test Drive
         </span>
       </div>
 
