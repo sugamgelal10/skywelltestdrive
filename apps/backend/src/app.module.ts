@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { IamModule } from './iam/iam.module';
 import { UserModule } from './user/user.module';
 import { TestDriveRegistrationModule } from './test-drive-registration/test-drive-registration.module';
+import { VisitOtpModule } from './visit-otp/visit-otp.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TestDriveRegistrationModule } from './test-drive-registration/test-driv
     DatabaseModule,
     UserModule,
     IamModule,
+    VisitOtpModule,
     TestDriveRegistrationModule,
   ],
   controllers: [AppController],

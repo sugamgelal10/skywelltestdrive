@@ -87,11 +87,23 @@ export default function TestDriveForm() {
       code: "",
     },
   });
+
   console.log(otpForm.getValues);
+  const sendOTP = useMutation({
+    mutationFn: ({ phone }: { phone: string }) => {
+      return Fetch({
+        url: "/visit-otp/send",
+        method: "POST",
+        data: {
+          phoneNumber: phone,
+        },
+      });
+    },
+  });
   const createOTP = useMutation({
     mutationFn: ({ code, phone }: { code: string; phone: string }) => {
       return Fetch({
-        url: "/visit-otp",
+        url: "/visit-otp/verify",
         method: "POST",
         data: {
           email: phone,
@@ -142,6 +154,7 @@ export default function TestDriveForm() {
 
   function onTestSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    sendOTP.mutate({ phone: form.getValues("phone") });
     setIsSubmitted(true);
   }
 
