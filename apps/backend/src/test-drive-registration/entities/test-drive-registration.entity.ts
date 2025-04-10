@@ -1,6 +1,13 @@
 import { CommonEntity } from 'src/entities/base.entity';
 import { Column, Entity } from 'typeorm';
 
+export enum RegistrationStatus {
+  PENDING = 'pending',
+  CANCELLED = 'cancelled',
+  APPROVED = 'approved',
+  COMPLETED = 'completed',
+}
+
 @Entity('test_drive_registrations')
 export class TestDriveRegistration extends CommonEntity {
   @Column({ type: 'varchar', name: 'first_name' })
@@ -29,4 +36,11 @@ export class TestDriveRegistration extends CommonEntity {
 
   @Column({ nullable: true })
   additionalInfo?: string;
+  @Column({
+    name: 'status',
+    type: 'enum',
+    enum: RegistrationStatus,
+    default: RegistrationStatus.PENDING,
+  })
+  status: RegistrationStatus;
 }

@@ -33,7 +33,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import poster from "@/poster.jpg";
-import { MinimalOtpVerification } from "./otp-page";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 const phoneRegex = /^\+?[0-9]{10,15}$/;
 
@@ -66,10 +72,51 @@ const formSchema = z.object({
   additionalInfo: z.string().optional(),
 });
 
+const otpSchema = z.object({
+  code: z
+    .string()
+    .length(6, {
+      message: "Verification code must be exactly 6 digits",
+    })
+    .regex(/^\d+$/, {
+      message: "Verification code must contain only numbers",
+    }),
+});
+
 export default function TestDriveForm() {
   const [_isSubmitted, setIsSubmitted] = useState(false);
-  const navigate = useNavigate();
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [_isSuccess, setIsSuccess] = useState(false);
 
+  const otpForm = useForm<z.infer<typeof otpSchema>>({
+    resolver: zodResolver(otpSchema),
+    defaultValues: {
+      code: "",
+    },
+  });
+  const createOTP = useMutation({
+    mutationFn: (data: z.infer<typeof otpSchema>) => {
+      return Fetch({
+        url: "/auth/verify",
+        method: "POST",
+        data: {
+          email: form.getValues("email"),
+          code: data,
+        },
+      });
+    },
+  });
+
+  // Handle otpForm submission
+  const onSubmit = async (data: z.infer<typeof otpSchema>) => {
+    setIsVerifying(true);
+    console.log(data);
+    createOTP.mutate(data);
+    setIsSuccess(true);
+  };
+  // if (isSuccess) {
+  //   return navigate({ to: "/sucess" });
+  // }
   const createTestDrive = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
       Fetch({
@@ -80,14 +127,6 @@ export default function TestDriveForm() {
     },
     onSuccess: () => {
       setIsSubmitted(true);
-      // navigate({
-      //   to: "/verify",
-      //   search: {
-      //     email: form.getValues("email"),
-      //     phone: form.getValues("phone"),
-      //     vehicle:
-      //   },
-      // });
     },
   });
 
@@ -104,7 +143,7 @@ export default function TestDriveForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onTestSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setIsSubmitted(true);
     createTestDrive.mutate(values);
@@ -115,7 +154,48 @@ export default function TestDriveForm() {
     be11520: "BE11 520",
     et5620: "ET5 620",
   };
-  if (_isSubmitted) return <MinimalOtpVerification />;
+  if (_isSubmitted)
+    return (
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">
+            Verification Code
+          </CardTitle>
+          <CardDescription className="text-center">
+            Enter the 6-digit code sent to {form.getValues("phone")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...otpForm}>
+            <form
+              onSubmit={otpForm.handleSubmit(onSubmit)}
+              className="space-y-6"
+            >
+              <FormField
+                control={otpForm.control}
+                name="code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter 6-digit code"
+                        {...field}
+                        maxLength={6}
+                        inputMode="numeric"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full" disabled={isVerifying}>
+                {isVerifying ? "Verifying..." : "Verify"}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    );
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen bg-slate-50">
       {/* Form Column */}
@@ -129,7 +209,10 @@ export default function TestDriveForm() {
           </p>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <form
+              onSubmit={form.handleSubmit(onTestSubmit)}
+              className="space-y-5"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
                 <FormField
                   control={form.control}

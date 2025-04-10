@@ -103,6 +103,9 @@ export class TestDriveRegistrationService {
           updateTestDriveRegistrationDto.additionalInfo)
       : (testDriveRegistration.additionalInfo =
           testDriveRegistration.additionalInfo);
+    updateTestDriveRegistrationDto.status
+      ? (testDriveRegistration.status = updateTestDriveRegistrationDto.status)
+      : (testDriveRegistration.status = testDriveRegistration.status);
     return runInTransaction((queryRunner) =>
       queryRunner.manager.save(TestDriveRegistration, testDriveRegistration),
     );

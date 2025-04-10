@@ -13,6 +13,7 @@ import { TestDriveRegistrationService } from './test-drive-registration.service'
 import { Auth } from 'src/iam/auth/decorator/auth.decorator';
 import { AuthType } from 'src/iam/auth/enums/auth-type.enum';
 
+
 @Auth(AuthType.None)
 @Controller('test-drive-registration')
 export class TestDriveRegistrationController {
