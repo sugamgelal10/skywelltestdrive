@@ -1,39 +1,34 @@
-import { useState } from "react";
-import { format } from "date-fns";
 import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  getFilteredRowModel,
   type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { format } from "date-fns";
+import {
+  ArrowUpDown,
+  CalendarIcon,
+  CarIcon,
+  Eye,
+  InfoIcon,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
+  UserIcon,
+} from "lucide-react";
+import { useState } from "react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -45,6 +40,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -52,12 +48,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Fetch } from "@/lib/fetcher";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 // Define the type for our registration data
 type Registration = {
@@ -70,76 +73,14 @@ type Registration = {
   date: Date;
   location: string;
   address: string;
+  updatedAt: any;
+  additionalInfo: string;
   status: "pending" | "approved" | "completed" | "cancelled";
 };
 
 const formSchema = z.object({
   status: z.enum(["pending", "approved", "completed", "cancelled"]),
 });
-
-// // // Sample data
-// const data: Registration[] = [
-//   {
-//     id: "REG-001",
-//     firstName: "John",
-//     lastName: "Doe",
-//     email: "john.doe@example.com",
-//     phone: "+1234567890",
-//     vehicle: "SUV",
-//     date: new Date(2023, 5, 15),
-//     location: "Berlin Dealership",
-//     address: "Paris, France",
-//     status: "approved",
-//   },
-//   {
-//     id: "REG-002",
-//     firstName: "Jane",
-//     lastName: "Smith",
-//     email: "jane.smith@example.com",
-//     phone: "+0987654321",
-//     vehicle: "Sedan",
-//     date: new Date(2023, 5, 20),
-//     location: "Munich Center",
-//     address: "Rome, Italy",
-//     status: "pending",
-//   },
-//   {
-//     id: "REG-003",
-//     firstName: "Mike",
-//     lastName: "Johnson",
-//     email: "mike.j@example.com",
-//     phone: "+1122334455",
-//     vehicle: "Luxury",
-//     date: new Date(2023, 4, 10),
-//     location: "Frankfurt Main",
-//     address: "Barcelona, Spain",
-//     status: "completed",
-//   },
-//   {
-//     id: "REG-004",
-//     firstName: "Sarah",
-//     lastName: "Williams",
-//     email: "sarah.w@example.com",
-//     phone: "+5566778899",
-//     vehicle: "Electric",
-//     date: new Date(2023, 6, 5),
-//     location: "Hamburg Port",
-//     address: "Amsterdam, Netherlands",
-//     status: "cancelled",
-//   },
-//   {
-//     id: "REG-005",
-//     firstName: "Robert",
-//     lastName: "Brown",
-//     email: "robert.b@example.com",
-//     phone: "+1231231234",
-//     vehicle: "Compact",
-//     date: new Date(2023, 6, 12),
-//     location: "Vienna Central",
-//     address: "Prague, Czech Republic",
-//     status: "pending",
-//   },
-// ];
 
 export function RegistrationsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -155,6 +96,7 @@ export function RegistrationsTable() {
       status: "pending",
     },
   });
+  const queryClient = useQueryClient();
   const { data } = useQuery<Registration[]>({
     queryKey: ["test-drive"],
     queryFn: () =>
@@ -179,6 +121,7 @@ export function RegistrationsTable() {
     },
     onSuccess: () => {
       setOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["test-drive"] });
       // You would typically refetch data or update local state here
     },
   });
@@ -189,14 +132,14 @@ export function RegistrationsTable() {
     updateStatus.mutate({ data: formData, id: selectedRegistration.id });
   };
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => {
-      return Fetch({
-        url: `/test-drive-registration/${id}`,
-        method: "DELETE",
-      });
-    },
-  });
+  // const deleteMutation = useMutation({
+  //   mutationFn: (id: string) => {
+  //     return Fetch({
+  //       url: `/test-drive-registration/${id}`,
+  //       method: "DELETE",
+  //     });
+  //   },
+  // });
 
   // Define the columns for our table
   const columns: ColumnDef<Registration>[] = [
@@ -264,7 +207,7 @@ export function RegistrationsTable() {
       header: "Test Drive Date",
       cell: ({ row }) => {
         const date = row.getValue("date") as Date;
-        return <div>{format(date, "PPP")}</div>;
+        return <div>{format(new Date(date), "PPP")}</div>;
       },
     },
     {
@@ -300,35 +243,50 @@ export function RegistrationsTable() {
         const registration = row.original;
 
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => {
-                  setSelectedRegistration(registration);
-                  form.reset({ status: registration.status });
-                  setOpen(true);
-                }}
-              >
-                Change Status
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="text-destructive"
-                onClick={() => {
-                  deleteMutation.mutate(registration.id);
-                }}
-              >
-                Delete registration
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div>
+            <Eye
+              onClick={() => {
+                setSelectedRegistration(registration);
+                form.reset({ status: registration.status });
+                setOpen(true);
+                console.log();
+              }}
+            />
+          </div>
+          // <DropdownMenu>
+          //   <DropdownMenuTrigger asChild>
+          //     <Button
+          //       variant="ghost"
+          //       className="h-8 w-8 p-0"
+          //       onClick={() => console.log("hi")}
+          //     >
+          //       <span className="sr-only">Open menu</span>
+          //       <MoreHorizontal className="h-4 w-4" />
+          //     </Button>
+          //   </DropdownMenuTrigger>
+          //   <DropdownMenuContent align="end">
+          //     <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          //     <DropdownMenuItem
+          //       onClick={() => {
+          //         setSelectedRegistration(registration);
+          //         form.reset({ status: registration.status });
+          //         setOpen(true);
+          //         console.log();
+          //       }}
+          //     >
+          //       Change Status
+          //     </DropdownMenuItem>
+          //     <DropdownMenuSeparator />
+          //     <DropdownMenuItem
+          //       className="text-destructive"
+          //       onClick={() => {
+          //         deleteMutation.mutate(registration.id);
+          //       }}
+          //     >
+          //       Delete registration
+          //     </DropdownMenuItem>
+          //   </DropdownMenuContent>
+          // </DropdownMenu>
         );
       },
     },
@@ -455,10 +413,17 @@ export function RegistrationsTable() {
       {/* Dialog for changing status */}
       {selectedRegistration && (
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Change Status</DialogTitle>
+              <DialogTitle className="text-xl font-bold">
+                Booking Details
+              </DialogTitle>
+              <DialogDescription>
+                Booking #{selectedRegistration?.id} - Last updated on{" "}
+                {new Date(selectedRegistration?.updatedAt).toLocaleString()}
+              </DialogDescription>
             </DialogHeader>
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FormField
@@ -493,6 +458,82 @@ export function RegistrationsTable() {
                 </div>
               </form>
             </Form>
+
+            <div className="py-4">
+              {/* Status Badge */}
+              <div className="mb-4 flex justify-end">
+                <Badge
+                  className={`${selectedRegistration?.status === "completed" ? "bg-green-500" : "bg-blue-500"} text-white`}
+                >
+                  {selectedRegistration?.status.charAt(0).toUpperCase() +
+                    selectedRegistration?.status.slice(1)}
+                </Badge>
+              </div>
+
+              {/* Customer Details */}
+              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                <h3 className="text-sm font-semibold text-gray-500 mb-2">
+                  CUSTOMER INFORMATION
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <UserIcon className="h-4 w-4 text-gray-500" />
+                    <span>
+                      {selectedRegistration?.firstName}{" "}
+                      {selectedRegistration?.lastName}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MailIcon className="h-4 w-4 text-gray-500" />
+                    <span>{selectedRegistration?.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <PhoneIcon className="h-4 w-4 text-gray-500" />
+                    <span>{selectedRegistration?.phone}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Booking Details */}
+              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                <h3 className="text-sm font-semibold text-gray-500 mb-2">
+                  BOOKING DETAILS
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CalendarIcon className="h-4 w-4 text-gray-500" />
+                    <span>
+                      {format(new Date(selectedRegistration?.date), "PPP")}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPinIcon className="h-4 w-4 text-gray-500" />
+                    <span>Location: {selectedRegistration?.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CarIcon className="h-4 w-4 text-gray-500" />
+                    <span>Vehicle: {selectedRegistration?.vehicle}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPinIcon className="h-4 w-4 text-gray-500" />
+                    <span>Address: {selectedRegistration?.address}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Information */}
+              {selectedRegistration?.additionalInfo && (
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <h3 className="text-sm font-semibold text-gray-500 mb-2">
+                    ADDITIONAL INFORMATION
+                  </h3>
+                  <div className="flex items-start gap-2">
+                    <InfoIcon className="h-4 w-4 text-gray-500 mt-1" />
+                    <span>{selectedRegistration?.additionalInfo}</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </DialogContent>
         </Dialog>
       )}
