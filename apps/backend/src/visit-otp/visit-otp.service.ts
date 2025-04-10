@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import generateSecureOTP from 'helper/generate-otp.helper';
-import { sendSms } from 'helper/sms.helper';
 import { runInTransaction } from 'src/helper/transaction.helper';
 import { MoreThan } from 'typeorm';
 import { CreateVisitOtpDto } from './dto/create-visit-otp.dto';
 import { VerifyVisitOtpDto } from './dto/verify-visit-otp.dto';
 import { OtpStatus, VisitOtp } from './entities/visit-otp.entity';
+import generateSecureOTP from 'src/helper/generate-otp.helper';
+import { sendSms } from 'src/helper/sms.helper';
 
 @Injectable()
 export class VisitOtpService {

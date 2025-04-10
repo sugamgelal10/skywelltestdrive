@@ -20,6 +20,7 @@ export class StorageService {
     const secretAccessKey = this.configService.get<string>(
       'STORAGE_SECRET_ACCESS_KEY',
     );
+    S3Client;
 
     const accountId = this.configService.get<string>('STORAGE_ACCOUNT_ID');
 
