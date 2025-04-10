@@ -26,7 +26,6 @@ import { Fetch } from "@/lib/fetcher";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
 import { format } from "date-fns";
 import { CalendarIcon, CheckCircle, MapPin } from "lucide-react";
 import { useState } from "react";
