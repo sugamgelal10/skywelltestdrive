@@ -202,9 +202,9 @@ export default function TestDriveForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Enter 6-digit code"
+                        placeholder="Enter 4-digit code"
                         {...field}
-                        maxLength={6}
+                        maxLength={4}
                         inputMode="numeric"
                       />
                     </FormControl>
