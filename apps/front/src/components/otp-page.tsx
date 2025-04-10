@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-otpForm";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/otpForm";
 import { Input } from "@/components/ui/input";
 import { Fetch } from "@/lib/fetcher";
 import { useMutation } from "@tanstack/react-query";
@@ -43,11 +43,11 @@ type MinimalOtpVerificationProps = {
 export function MinimalOtpVerification(props: any) {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const route = getRouteApi("/_user/verify");
   // const { email } = route.useSearch();
-  // Initialize the form with Zod validation
-  const form = useForm<z.infer<typeof otpSchema>>({
+  // Initialize the otpForm with Zod validation
+  const otpForm = useForm<z.infer<typeof otpSchema>>({
     resolver: zodResolver(otpSchema),
     defaultValues: {
       code: "",
@@ -66,7 +66,7 @@ export function MinimalOtpVerification(props: any) {
     },
   });
 
-  // Handle form submission
+  // Handle otpForm submission
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
     setIsVerifying(true);
     console.log(data);
@@ -87,10 +87,10 @@ export function MinimalOtpVerification(props: any) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <Form {...otpForm}>
+          <otpForm onSubmit={otpForm.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
-              control={form.control}
+              control={otpForm.control}
               name="code"
               render={({ field }) => (
                 <FormItem>
@@ -109,7 +109,7 @@ export function MinimalOtpVerification(props: any) {
             <Button type="submit" className="w-full" disabled={isVerifying}>
               {isVerifying ? "Verifying..." : "Verify"}
             </Button>
-          </form>
+          </otpForm>
         </Form>
       </CardContent>
     </Card>
