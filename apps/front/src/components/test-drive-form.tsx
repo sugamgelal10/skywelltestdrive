@@ -33,6 +33,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import poster from "@/poster.jpg";
+import { MinimalOtpVerification } from "./otp-page";
 
 const phoneRegex = /^\+?[0-9]{10,15}$/;
 
@@ -78,10 +79,15 @@ export default function TestDriveForm() {
       });
     },
     onSuccess: () => {
-      navigate({
-        to: "/verify",
-        search: { email: form.getValues("email") },
-      });
+      setIsSubmitted(true);
+      // navigate({
+      //   to: "/verify",
+      //   search: {
+      //     email: form.getValues("email"),
+      //     phone: form.getValues("phone"),
+      //     vehicle:
+      //   },
+      // });
     },
   });
 
@@ -109,7 +115,7 @@ export default function TestDriveForm() {
     be11520: "BE11 520",
     et5620: "ET5 620",
   };
-
+  if (_isSubmitted) return <MinimalOtpVerification />;
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen bg-slate-50">
       {/* Form Column */}

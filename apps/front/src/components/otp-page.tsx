@@ -40,12 +40,12 @@ type MinimalOtpVerificationProps = {
   onSuccess?: () => void;
 };
 
-export function MinimalOtpVerification({}: MinimalOtpVerificationProps) {
+export function MinimalOtpVerification(props: any) {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const navigate = useNavigate();
-  const route = getRouteApi("/_user/verify");
-  const { email } = route.useSearch();
+  // const navigate = useNavigate();
+  // const route = getRouteApi("/_user/verify");
+  // const { email } = route.useSearch();
   // Initialize the form with Zod validation
   const form = useForm<z.infer<typeof otpSchema>>({
     resolver: zodResolver(otpSchema),
