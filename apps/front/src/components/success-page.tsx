@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -8,6 +7,7 @@ import {
 } from "./ui/card";
 import { CheckCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "@tanstack/react-router";
 
 const SucessPage = () => {
   return (
@@ -27,7 +27,9 @@ const SucessPage = () => {
         </p>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Register Another Test Drive</Button>
+        <Link to="/" className="w-full justify-center">
+          <Button className="w-full">Register Another Test Drive</Button>
+        </Link>
       </CardFooter>
     </Card>
   );

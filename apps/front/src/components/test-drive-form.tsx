@@ -1,21 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, MapPin } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,9 +22,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Fetch } from "@/lib/fetcher";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { format } from "date-fns";
+import { CalendarIcon, CheckCircle, MapPin } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import poster from "@/poster.jpg";
 
 const phoneRegex = /^\+?[0-9]{10,15}$/;
 
@@ -71,8 +66,24 @@ const formSchema = z.object({
 });
 
 export default function TestDriveForm() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [_isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+
+  const createTestDrive = useMutation({
+    mutationFn: async (data: z.infer<typeof formSchema>) => {
+      Fetch({
+        url: "/test-drive",
+        method: "POST",
+        data: data,
+      });
+    },
+    onSuccess: () => {
+      navigate({
+        to: "/verify",
+        search: { email: form.getValues("email") },
+      });
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,232 +101,272 @@ export default function TestDriveForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setIsSubmitted(true);
+    createTestDrive.mutate(values);
   }
 
-  if (isSubmitted) {
-    return navigate({
-      to: "/verify",
-      search: { email: form.getValues("email") },
-    });
-  }
+  const vehicles = {
+    be11410: "BE11 410",
+    be11520: "BE11 520",
+    et5620: "ET5 620",
+  };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Test Drive Registration</CardTitle>
-        <CardDescription>
-          Fill out the form below to register for a test drive.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+    <div className="flex flex-col lg:flex-row w-full min-h-screen bg-slate-50">
+      {/* Form Column */}
+      <div className="w-full lg:w-1/2 p-4 md:p-8 lg:p-12">
+        <div className="max-w-md mx-auto">
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">
+            Experience Excellence
+          </h1>
+          <p className="text-slate-600 mb-8">
+            Register for a test drive and feel the road like never before.
+          </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="john.doe@example.com"
-                        type="email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
-                    <FormControl>
-                      <Input placeholder="+1234567890" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter a valid phone number (10-15 digits).
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Address</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Street, City, State, Zip"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="vehicle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Vehicle Model</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder="Select a vehicle model"
-                            className="w-full"
+                        <Input placeholder="John" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="john.doe@example.com"
+                          type="email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <Input placeholder="+1234567890" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Street, City, State, Zip"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="vehicle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Vehicle Model</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue
+                              placeholder="Select a vehicle model"
+                              className=""
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="w-full">
+                          {Object.entries(vehicles).map(([value, label]) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Test Drive Date</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) =>
+                              date < new Date() ||
+                              date >
+                                new Date(
+                                  new Date().setMonth(new Date().getMonth() + 3)
+                                )
+                            }
+                            initialFocus
                           />
-                        </SelectTrigger>
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Showroom Location</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            className="pl-10"
+                            placeholder="City or dealership"
+                            {...field}
+                          />
+                        </div>
                       </FormControl>
-                      <SelectContent className="w-full">
-                        <SelectItem value="be11410">BE11 410</SelectItem>
-                        <SelectItem value="be11520">BE11 520</SelectItem>
-                        <SelectItem value="et5620">ET5 650</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="additionalInfo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Additional Information</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Any specific requirements or questions..."
+                        className="resize-none"
+                        rows={3}
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              <div className="pt-4">
+                <Button type="submit" className="w-full">
+                  Submit Registration
+                </Button>
+              </div>
+            </form>
+          </Form>
+
+          <div className="mt-6 space-y-2">
+            <div className="flex items-center text-sm text-slate-600">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+              <span>No payment required for test drive registration</span>
             </div>
+            <div className="flex items-center text-sm text-slate-600">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+              <span>Confirmation Message with details will be sent</span>
+            </div>
+            <div className="flex items-center text-sm text-slate-600">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+              <span>Personalized experience with our experts</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Test Drive Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date() ||
-                          date >
-                            new Date(
-                              new Date().setMonth(new Date().getMonth() + 3)
-                            )
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription>
-                    Select a date within the next 3 months.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      {/* Image Column */}
+      <div className="w-full lg:w-1/2 bg-slate-900 relative overflow-hidden">
+        {/* <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-40 z-10"></div> */}
 
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Showroom Location</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        className="pl-10"
-                        placeholder="City or dealership"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {/* Placeholder image - in a real app you would use a real image here */}
+        <img
+          src={poster}
+          alt="Luxury car on a scenic road"
+          className="object-cover w-full h-full"
+        />
 
-            <FormField
-              control={form.control}
-              name="additionalInfo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Additional Information</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Any specific requirements or questions about driving in Europe..."
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit" className="w-full">
-              Submit Registration
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+        {/* <div className="absolute bottom-0 left-0 p-8 z-20 text-white">
+          <h2 className="text-4xl font-bold mb-2">Drive the Future Today</h2>
+          <p className="text-lg max-w-md">
+            Experience the perfect blend of luxury, performance, and
+            cutting-edge technology.
+          </p>
+        </div> */}
+      </div>
+    </div>
   );
 }

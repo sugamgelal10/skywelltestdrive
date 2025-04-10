@@ -1,7 +1,6 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { CheckCircle } from "lucide-react";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,8 +18,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Fetch } from "@/lib/fetcher";
+import { useMutation } from "@tanstack/react-query";
+import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 
 // Define the schema for OTP validation
 const otpSchema = z.object({
@@ -39,14 +40,12 @@ type MinimalOtpVerificationProps = {
   onSuccess?: () => void;
 };
 
-export function MinimalOtpVerification({
-  email = "your email",
-  onSuccess,
-}: MinimalOtpVerificationProps) {
+export function MinimalOtpVerification({}: MinimalOtpVerificationProps) {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
-
+  const route = getRouteApi("/_user/verify");
+  const { email } = route.useSearch();
   // Initialize the form with Zod validation
   const form = useForm<z.infer<typeof otpSchema>>({
     resolver: zodResolver(otpSchema),
@@ -54,11 +53,24 @@ export function MinimalOtpVerification({
       code: "",
     },
   });
+  const createOTP = useMutation({
+    mutationFn: (data: z.infer<typeof otpSchema>) => {
+      return Fetch({
+        url: "/auth/verify",
+        method: "POST",
+        data: {
+          email: email,
+          code: data,
+        },
+      });
+    },
+  });
 
   // Handle form submission
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
     setIsVerifying(true);
     console.log(data);
+    createOTP.mutate(data);
     setIsSuccess(true);
   };
   if (isSuccess) {
