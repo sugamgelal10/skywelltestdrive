@@ -34,7 +34,7 @@ jobs:
           context: ./apps/backend
           file: ./apps/backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivebackend:test
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivebackend:prod
           cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivebackend:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivebackend:buildcache,mode=max
       - name: Call Webhook Endpoint
