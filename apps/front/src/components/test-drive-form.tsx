@@ -32,6 +32,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { Navigate, useNavigate } from "@tanstack/react-router";
 
 const phoneRegex = /^\+?[0-9]{10,15}$/;
 
@@ -67,8 +68,8 @@ const formSchema = z.object({
 const otpSchema = z.object({
   code: z
     .string()
-    .length(6, {
-      message: "Verification code must be exactly 6 digits",
+    .length(4, {
+      message: "Verification code must be exactly 4 digits",
     })
     .regex(/^\d+$/, {
       message: "Verification code must contain only numbers",
@@ -81,6 +82,8 @@ export default function TestDriveForm() {
   const [_isSuccess, setIsSuccess] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
+  const navigate = useNavigate();
+
   const otpForm = useForm<z.infer<typeof otpSchema>>({
     resolver: zodResolver(otpSchema),
     defaultValues: {
@@ -88,7 +91,6 @@ export default function TestDriveForm() {
     },
   });
 
-  console.log(otpForm.getValues);
   const sendOTP = useMutation({
     mutationFn: ({ phone }: { phone: string }) => {
       return Fetch({
@@ -100,16 +102,45 @@ export default function TestDriveForm() {
       });
     },
   });
-  const createOTP = useMutation({
-    mutationFn: ({ code, phone }: { code: string; phone: string }) => {
+
+  const createTestDrive = useMutation({
+    mutationFn: async () => {
+      Fetch({
+        url: "/test-drive-registration",
+        method: "POST",
+        data: {
+          firstName: form.getValues("firstName"),
+          lastName: form.getValues("lastName"),
+          email: form.getValues("email"),
+          phone: form.getValues("phone"),
+          vehicle: form.getValues("vehicle"),
+          location: form.getValues("location"),
+          address: form.getValues("address"),
+          date: form.getValues("date"),
+          additionalInfo: form.getValues("additionalInfo"),
+        },
+      });
+    },
+
+    onSuccess: () => {
+      setIsSubmitted(true);
+    },
+  });
+
+  const verifyOTP = useMutation({
+    mutationFn: ({ code }: { code: string }) => {
       return Fetch({
         url: "/visit-otp/verify",
         method: "POST",
         data: {
-          email: phone,
-          code: code,
+          phoneNumber: form.getValues("phone"),
+          otp: code,
         },
       });
+    },
+    onSuccess: () => {
+      createTestDrive.mutate();
+      return navigate({ to: "/sucess" });
     },
   });
 
@@ -117,27 +148,11 @@ export default function TestDriveForm() {
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
     setIsVerifying(true);
     console.log(data);
-    createOTP.mutate({
+    verifyOTP.mutate({
       code: otpForm.getValues("code"),
-      phone: form.getValues("phone"),
     });
     setIsSuccess(true);
   };
-  // if (isSuccess) {
-  //   return navigate({ to: "/sucess" });
-  // }
-  // const createTestDrive = useMutation({
-  //   mutationFn: async (data: z.infer<typeof formSchema>) => {
-  //     Fetch({
-  //       url: "/test-drive-registration",
-  //       method: "POST",
-  //       data: data,
-  //     });
-  //   },
-  //   onSuccess: () => {
-  //     setIsSubmitted(true);
-  //   },
-  // });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

@@ -11,7 +11,6 @@ const seedingDataSourceoOptions: DataSourceOptions & SeederOptions = {
 const dataSource = new DataSource(seedingDataSourceoOptions);
 dataSource.initialize().then(async () => {
   await runSeeders(dataSource);
-  console.log('Seeding completed......');
   process.exit();
 });
 //

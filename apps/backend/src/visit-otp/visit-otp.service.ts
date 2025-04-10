@@ -12,7 +12,6 @@ export class VisitOtpService {
   async sendOtp(createVisitOtpDto: CreateVisitOtpDto) {
     const otp = generateSecureOTP();
     const { email, phoneNumber } = createVisitOtpDto;
-
     if (phoneNumber) {
       await sendSms(
         phoneNumber,
