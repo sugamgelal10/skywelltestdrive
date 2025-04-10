@@ -26,5 +26,10 @@ export default defineConfig(({ mode }) => {
         "@": resolve(__dirname, "./src"),
       },
     },
+    preview: {
+      host: "0.0.0.0",
+      port: 4173,
+      allowedHosts: ["skywelltestdrive.kcanjan.com.np"],
+    },
   };
 });
