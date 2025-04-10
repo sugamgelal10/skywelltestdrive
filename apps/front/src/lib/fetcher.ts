@@ -3,7 +3,7 @@ import { Mutex } from "async-mutex";
 import axios, { AxiosError } from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
 
-export const baseURL = process.env.VITE_BASE_URL;
+export const baseURL = "https://skywelltestdriveapi.kcanjan.com.np/";
 
 console.log(baseURL);
 
