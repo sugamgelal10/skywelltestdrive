@@ -1,6 +1,6 @@
-import { QueryRunner } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import { AppDataSource } from 'src/database/data-source';
+import { QueryRunner } from 'typeorm';
 
 export async function runInTransaction<T>(
   operation: (queryRunner: QueryRunner) => Promise<T>,
