@@ -1,35 +1,32 @@
-import { defineConfig } from "vite";
-import viteReact from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
-import { resolve } from "node:path";
-import { loadEnv } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { fileURLToPath } from "url";
+import { defineConfig, loadEnv } from "vite";
 
-// https://vitejs.dev/config/
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
-    plugins: [
-      TanStackRouterVite({ autoCodeSplitting: true }),
-      viteReact(),
-      tailwindcss(),
-    ],
-    test: {
-      globals: true,
-      environment: "jsdom",
-    },
     define: {
-      "process.env": env,
-    },
-    resolve: {
-      alias: {
-        "@": resolve(__dirname, "./src"),
+      "process.env": {
+        VITE_BASE_URL: env.VITE_BASE_URL,
+        
       },
     },
-    preview: {
-      host: "0.0.0.0",
-      port: 4173,
-      allowedHosts: ["skywelltestdrive.kcanjan.com.np"],
+    plugins: [react(), TanStackRouterVite()],
+    resolve: {
+      alias: {
+        "@": path.resolve(dirname, "./src"),
+      },
     },
+    server: {
+      port: 3002,
+    },
+    preview: {
+      allowedHosts:true
+    }
   };
+
 });
