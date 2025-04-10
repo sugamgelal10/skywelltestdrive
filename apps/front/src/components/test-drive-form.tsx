@@ -21,6 +21,7 @@ import { Fetch } from "@/lib/fetcher";
 import poster from "@/poster.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { CalendarIcon, CheckCircle, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,7 +33,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Navigate, useNavigate } from "@tanstack/react-router";
 
 const phoneRegex = /^\+?[0-9]{10,15}$/;
 
