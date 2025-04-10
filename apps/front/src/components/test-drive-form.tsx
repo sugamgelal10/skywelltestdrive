@@ -87,14 +87,15 @@ export default function TestDriveForm() {
       code: "",
     },
   });
+  console.log(otpForm.getValues);
   const createOTP = useMutation({
-    mutationFn: (data: z.infer<typeof otpSchema>) => {
+    mutationFn: ({ code, phone }: { code: string; phone: string }) => {
       return Fetch({
-        url: "/auth/verify",
+        url: "/visit-otp",
         method: "POST",
         data: {
-          email: form.getValues("email"),
-          code: data,
+          email: phone,
+          code: code,
         },
       });
     },
@@ -104,24 +105,27 @@ export default function TestDriveForm() {
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
     setIsVerifying(true);
     console.log(data);
-    createOTP.mutate(data);
+    createOTP.mutate({
+      code: otpForm.getValues("code"),
+      phone: form.getValues("phone"),
+    });
     setIsSuccess(true);
   };
   // if (isSuccess) {
   //   return navigate({ to: "/sucess" });
   // }
-  const createTestDrive = useMutation({
-    mutationFn: async (data: z.infer<typeof formSchema>) => {
-      Fetch({
-        url: "/test-drive-registration",
-        method: "POST",
-        data: data,
-      });
-    },
-    onSuccess: () => {
-      setIsSubmitted(true);
-    },
-  });
+  // const createTestDrive = useMutation({
+  //   mutationFn: async (data: z.infer<typeof formSchema>) => {
+  //     Fetch({
+  //       url: "/test-drive-registration",
+  //       method: "POST",
+  //       data: data,
+  //     });
+  //   },
+  //   onSuccess: () => {
+  //     setIsSubmitted(true);
+  //   },
+  // });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -139,7 +143,6 @@ export default function TestDriveForm() {
   function onTestSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setIsSubmitted(true);
-    createTestDrive.mutate(values);
   }
 
   const vehicles = {
