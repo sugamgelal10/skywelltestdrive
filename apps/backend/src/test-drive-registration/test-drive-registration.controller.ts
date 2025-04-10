@@ -10,7 +10,10 @@ import {
 import { CreateTestDriveRegistrationDto } from './dto/create-test-drive-registration.dto';
 import { UpdateTestDriveRegistrationDto } from './dto/update-test-drive-registration.dto';
 import { TestDriveRegistrationService } from './test-drive-registration.service';
+import { Auth } from 'src/iam/auth/decorator/auth.decorator';
+import { AuthType } from 'src/iam/auth/enums/auth-type.enum';
 
+@Auth(AuthType.None)
 @Controller('test-drive-registration')
 export class TestDriveRegistrationController {
   constructor(
