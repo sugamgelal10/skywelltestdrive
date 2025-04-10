@@ -397,15 +397,6 @@ export default function TestDriveForm() {
                                   type="date"
                                   className="w-full pl-10"
                                   min={new Date().toISOString().split("T")[0]}
-                                  max={
-                                    new Date(
-                                      new Date().setMonth(
-                                        new Date().getMonth() + 3
-                                      )
-                                    )
-                                      .toISOString()
-                                      .split("T")[0]
-                                  }
                                   onChange={(e) => {
                                     const date = e.target.valueAsDate;
                                     if (date) {
