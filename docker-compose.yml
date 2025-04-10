@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: skywelltestdrive
+    volumes:
+      - skywelltestdrive-data:/var/lib/postgresql/data
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+    restart: always
+
+  admin:
+    image: adminer
+    restart: always
+    ports:
+      - 9999:8080
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+
+volumes:
+  skywelltestdrive-data:
+    driver: local

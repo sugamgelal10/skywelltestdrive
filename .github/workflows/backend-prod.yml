@@ -4,12 +4,12 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "apps/api/**"
+      - "apps/backend/**"
 
   pull_request:
     branches: ["main"]
     paths:
-      - "apps/api/**"
+      - "apps/backend/**"
 
 jobs:
   build:
@@ -31,11 +31,11 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./apps/api
-          file: ./apps/api/Dockerfile
+          context: ./apps/backend
+          file: ./apps/backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/tdfapi:prod
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/tdfapi:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/tdfapi:buildcache,mode=max
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivebackend:prod
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivebackend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivebackend:buildcache,mode=max
       - name: Call Webhook Endpoint
         run: curl -H 'Authorization:\ Bearer ${{ secrets.COOLIFY_AUTH_TOKEN }}' ${{ secrets.BACKEND_WEBHOOK_URL_PROD}}

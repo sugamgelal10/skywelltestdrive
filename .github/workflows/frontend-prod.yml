@@ -33,11 +33,11 @@ jobs:
         with:
           context: ./apps/front
           file: ./apps/front/Dockerfile
-          build-args: NEXT_PUBLIC_BASE_URL=https://apitdf.priflow.app/
-            NEXT_PUBLIC_SITE_URL=https://tdf.priflow.app/
+          build-args: |
+            BASE_URL=https://api.kcanjan.com.np/
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/tdffrontend:prod
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/tdffrontend:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/tdffrontend:buildcache,mode=max
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivefrontend:prod
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/porskywelltestdrivefrontendtfoliofrontend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivefrontend:buildcache,mode=max
       - name: Call Webhook Endpoint
-        run: curl -H 'Authorization:\ Bearer ${{ secrets.COOLIFY_AUTH_TOKEN }}' ${{ secrets.FRONTEND_WEBHOOK_URL_PROD }}
+        run: curl -H 'Authorization:\ Bearer ${{ secrets.COOLIFY_AUTH_TOKEN }}' ${{ secrets.FRONTEND_WEBHOOK_URL}}
