@@ -36,15 +36,15 @@ async function bootstrap() {
   const env: string = configService.get('APP_ENV') || 'development';
   if (env.toUpperCase() !== 'PRODUCTION') {
     const config = new DocumentBuilder()
-      .setTitle('HRM Apis')
+      .setTitle('SKYWELL  Apis')
       .setDescription('Description goes here')
       .setVersion('1.0')
-      .addTag('HRM')
+      .addTag('SKYWELL ')
       .addBearerAuth()
       .build();
     const documentFactory = () => SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, documentFactory, {
-      customSiteTitle: 'HRM API Documentation',
+      customSiteTitle: 'SKYWELL  API Documentation',
     });
   }
 

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -9,11 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 import {
   Select,
   SelectContent,
@@ -23,15 +18,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Fetch } from "@/lib/fetcher";
-import { cn } from "@/lib/utils";
+import poster from "@/poster.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
 import { CalendarIcon, CheckCircle, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import poster from "@/poster.jpg";
 import {
   Card,
   CardContent,
@@ -322,9 +315,28 @@ export default function TestDriveForm() {
                   )}
                 />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
                 <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Showroom Location</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            className="pl-10"
+                            placeholder="City or dealership"
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* <FormField
                   control={form.control}
                   name="date"
                   render={({ field }) => (
@@ -334,7 +346,7 @@ export default function TestDriveForm() {
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
-                              variant={"outline"}
+                              variant="outline"
                               className={cn(
                                 "w-full pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground"
@@ -368,24 +380,49 @@ export default function TestDriveForm() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
-
+                /> */}
                 <FormField
                   control={form.control}
-                  name="location"
+                  name="date"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Showroom Location</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                          <Input
-                            className="pl-10"
-                            placeholder="City or dealership"
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
+                      <FormLabel>Test Drive Date</FormLabel>
+                      <div className="relative">
+                        <FormControl>
+                          <div className="flex">
+                            <div className="relative w-full">
+                              <Input
+                                type="date"
+                                className="w-full pl-10"
+                                min={new Date().toISOString().split("T")[0]}
+                                max={
+                                  new Date(
+                                    new Date().setMonth(
+                                      new Date().getMonth() + 3
+                                    )
+                                  )
+                                    .toISOString()
+                                    .split("T")[0]
+                                }
+                                onChange={(e) => {
+                                  const date = e.target.valueAsDate;
+                                  if (date) {
+                                    field.onChange(date);
+                                  }
+                                }}
+                                value={
+                                  field.value
+                                    ? new Date(field.value)
+                                        .toISOString()
+                                        .split("T")[0]
+                                    : ""
+                                }
+                              />
+                              <CalendarIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                            </div>
+                          </div>
+                        </FormControl>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
