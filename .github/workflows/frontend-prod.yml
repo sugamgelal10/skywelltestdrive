@@ -34,7 +34,7 @@ jobs:
           context: ./apps/front
           file: ./apps/front/Dockerfile
           build-args: |
-            BASE_URL=https://api.kcanjan.com.np/
+            BASE_URL=https://skywelltestdriveapi.kcanjan.com.np/
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/skywelltestdrivefrontend:prod
           cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/porskywelltestdrivefrontendtfoliofrontend:buildcache
