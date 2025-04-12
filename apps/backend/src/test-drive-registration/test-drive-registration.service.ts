@@ -111,6 +111,14 @@ export class TestDriveRegistrationService {
     updateTestDriveRegistrationDto.status
       ? (testDriveRegistration.status = updateTestDriveRegistrationDto.status)
       : (testDriveRegistration.status = testDriveRegistration.status);
+
+    if (updateTestDriveRegistrationDto.status === 'approved') {
+      console.log(updateTestDriveRegistrationDto.date);
+      sendSms(
+        testDriveRegistration.phone,
+        `Dear ${testDriveRegistration.firstName}, Your Test Drive on Drive Skywell 2025 NepalToEurope is scheduled on ${new Date(updateTestDriveRegistrationDto.date).toISOString().split('T')[0]} . We will contact you for further process!-Skywell Nepal`,
+      );
+    }
     return runInTransaction((queryRunner) =>
       queryRunner.manager.save(TestDriveRegistration, testDriveRegistration),
     );
