@@ -3,8 +3,8 @@ import { Mutex } from "async-mutex";
 import axios, { AxiosError } from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
 
-// export const baseURL = "https://apitestdrive.gmotors.com.np/";
-export const baseURL = "http://localhost:3000/";
+export const baseURL = "https://apitestdrive.gmotors.com.np/";
+// export const baseURL = "http://localhost:3000/";
 
 const mutex = new Mutex();
 
