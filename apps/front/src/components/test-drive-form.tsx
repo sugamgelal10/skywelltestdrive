@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Otptimer } from "@siamf/otp-timer";
 import {
   Form,
   FormControl,
@@ -231,9 +232,7 @@ export default function TestDriveForm() {
             </form>
           </Form>
 
-          <Button className="w-full" variant={"link"} onClick={onTestSubmit}>
-            Resend OTP
-          </Button>
+          <Otptimer minutes={1} seconds={30} onResend={onTestSubmit} />
         </CardContent>
       </Card>
     );
