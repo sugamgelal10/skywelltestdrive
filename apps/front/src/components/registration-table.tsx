@@ -79,6 +79,7 @@ type Registration = {
 };
 
 const formSchema = z.object({
+  date: z.date(),
   status: z.enum(["pending", "approved", "completed", "cancelled"]),
 });
 
@@ -90,12 +91,6 @@ export function RegistrationsTable() {
     useState<Registration | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      status: "pending",
-    },
-  });
   const queryClient = useQueryClient();
   const { data } = useQuery<Registration[]>({
     queryKey: ["test-drive"],
@@ -104,6 +99,13 @@ export function RegistrationsTable() {
         url: "/test-drive-registration",
         method: "GET",
       }),
+  });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      status: "pending",
+      date: selectedRegistration?.date || new Date(),
+    },
   });
   const updateStatus = useMutation({
     mutationFn: ({
@@ -423,6 +425,49 @@ export function RegistrationsTable() {
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => {
+                    console.log(field);
+                    return (
+                      <FormItem>
+                        <FormLabel>Test Drive Date</FormLabel>
+                        <div className="relative">
+                          <FormControl>
+                            <div className="flex">
+                              <div className="relative w-full">
+                                <Input
+                                  type="date"
+                                  className="w-full pl-10"
+                                  min={new Date().toISOString().split("T")[0]}
+                                  onChange={(e) => {
+                                    const date = e.target.valueAsDate;
+                                    if (date) {
+                                      field.onChange(date);
+                                      field.onChange(date);
+                                    }
+                                  }}
+                                  value={
+                                    field.value
+                                      ? new Date(field.value)
+                                          .toISOString()
+                                          .split("T")[0]
+                                      : new Date(selectedRegistration.date)
+                                          .toISOString()
+                                          .split("T")[0]
+                                  }
+                                />
+                                <CalendarIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                              </div>
+                            </div>
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
                 <FormField
                   control={form.control}
                   name="status"
