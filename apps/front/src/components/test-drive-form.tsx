@@ -33,6 +33,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { toast } from "sonner";
 
 const phoneRegex = /^\+?[0-9]{10,15}$/;
 
@@ -78,7 +79,6 @@ const otpSchema = z.object({
 
 export default function TestDriveForm() {
   const [_isSubmitted, setIsSubmitted] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
   const [_isSuccess, setIsSuccess] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -92,14 +92,20 @@ export default function TestDriveForm() {
   });
 
   const sendOTP = useMutation({
-    mutationFn: ({ phone }: { phone: string }) => {
-      return Fetch({
+    mutationFn: async ({ phone }: { phone: string }) => {
+      return await Fetch({
         url: "/visit-otp/send",
         method: "POST",
         data: {
           phoneNumber: phone,
         },
       });
+    },
+    onSuccess: () => {
+      setIsSubmitted(true);
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
@@ -125,6 +131,9 @@ export default function TestDriveForm() {
     onSuccess: () => {
       setIsSubmitted(true);
     },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 
   const verifyOTP = useMutation({
@@ -142,12 +151,13 @@ export default function TestDriveForm() {
       createTestDrive.mutate();
       return navigate({ to: "/sucess" });
     },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 
   // Handle otpForm submission
-  const onSubmit = async (data: z.infer<typeof otpSchema>) => {
-    setIsVerifying(true);
-    console.log(data);
+  const onSubmit = async () => {
     verifyOTP.mutate({
       code: otpForm.getValues("code"),
     });
@@ -167,10 +177,9 @@ export default function TestDriveForm() {
     },
   });
 
-  function onTestSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    sendOTP.mutate({ phone: form.getValues("phone") });
+  function onTestSubmit() {
     setIsSubmitted(true);
+    sendOTP.mutate({ phone: form.getValues("phone") });
   }
 
   const vehicles = {
@@ -186,7 +195,7 @@ export default function TestDriveForm() {
             Verification Code
           </CardTitle>
           <CardDescription className="text-center">
-            Enter the 6-digit code sent to {form.getValues("phone")}
+            Enter the 4-digit code sent to {form.getValues("phone")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -212,11 +221,19 @@ export default function TestDriveForm() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isVerifying}>
-                {isVerifying ? "Verifying..." : "Verify"}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={verifyOTP.isPending}
+              >
+                {verifyOTP.isPending ? "Verifying..." : "Verify"}
               </Button>
             </form>
           </Form>
+
+          <Button className="w-full" variant={"link"} onClick={onTestSubmit}>
+            Resend OTP
+          </Button>
         </CardContent>
       </Card>
     );
@@ -604,22 +621,22 @@ export default function TestDriveForm() {
                       <p>Share your experience by:</p>
                       <ul className="list-disc ml-8 mt-2 space-y-1">
                         <li>
-                          Liking the official{" "}
+                          Like the official{" "}
                           <span className="font-medium">
                             Skywell Nepal-G. Motors
                           </span>{" "}
                           page
                         </li>
-                        <li>Posting a picture from your test drive</li>
+                        <li>Post a picture from your test drive</li>
                         <li>
-                          Including the hashtags{" "}
+                          Include the hashtags{" "}
                           <span className="font-medium">#TestDriveSkywell</span>{" "}
                           and{" "}
                           <span className="font-medium">
                             #DriveSkywellNepalToEurope
                           </span>
                         </li>
-                        <li>Sharing your post with your network</li>
+                        <li>Share your post with your network</li>
                       </ul>
                     </div>
                   </div>
@@ -647,6 +664,9 @@ export default function TestDriveForm() {
                 By participating in our test drive program, you agree to these
                 terms and conditions. We look forward to providing you with an
                 exceptional driving experience!
+              </p>
+              <p className="text-[6px] italic text-slate-500 pt-2">
+                *Data collected here will be used for different purpose.
               </p>
 
               <button

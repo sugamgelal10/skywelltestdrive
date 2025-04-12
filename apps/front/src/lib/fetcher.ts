@@ -6,8 +6,6 @@ import type { AxiosRequestConfig, AxiosResponse } from "axios";
 export const baseURL = "https://apitestdrive.gmotors.com.np/";
 // export const baseURL = "http://localhost:3000/";
 
-console.log(baseURL);
-
 const mutex = new Mutex();
 
 type ValidationError = {

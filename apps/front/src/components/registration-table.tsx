@@ -249,7 +249,6 @@ export function RegistrationsTable() {
                 setSelectedRegistration(registration);
                 form.reset({ status: registration.status });
                 setOpen(true);
-                console.log();
               }}
             />
           </div>
@@ -258,7 +257,6 @@ export function RegistrationsTable() {
           //     <Button
           //       variant="ghost"
           //       className="h-8 w-8 p-0"
-          //       onClick={() => console.log("hi")}
           //     >
           //       <span className="sr-only">Open menu</span>
           //       <MoreHorizontal className="h-4 w-4" />
@@ -271,7 +269,6 @@ export function RegistrationsTable() {
           //         setSelectedRegistration(registration);
           //         form.reset({ status: registration.status });
           //         setOpen(true);
-          //         console.log();
           //       }}
           //     >
           //       Change Status

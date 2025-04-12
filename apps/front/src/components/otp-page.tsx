@@ -69,7 +69,6 @@
 //   // Handle otpForm submission
 //   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
 //     setIsVerifying(true);
-//     console.log(data);
 //     createOTP.mutate(data);
 //     setIsSuccess(true);
 //   };

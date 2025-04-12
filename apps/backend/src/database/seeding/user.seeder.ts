@@ -31,7 +31,6 @@ export class UserSeeder implements Seeder {
       },
     ]);
     const userFactory = factoryManager.get(User);
-    console.log('Seeding User......');
     await userFactory.saveMany(500);
   }
 }
