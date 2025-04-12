@@ -26,7 +26,7 @@ export class CreateTestDriveRegistrationDto {
 
   @IsString()
   @MinLength(10, { message: 'Phone number must be at least 10 digits.' })
-  @Matches(/^\d{10}$/, { message: 'Phone number must be 10 digits.' })
+  // @Matches( { message: 'Phone number must be 10 digits.' })
   @IsNotEmpty({ message: 'Please enter a valid phone number.' })
   phone: string;
 
