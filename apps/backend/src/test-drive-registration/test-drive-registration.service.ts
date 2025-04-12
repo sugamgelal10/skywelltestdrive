@@ -10,6 +10,7 @@ import { UpdateTestDriveRegistrationDto } from './dto/update-test-drive-registra
 import { TestDriveRegistration } from './entities/test-drive-registration.entity';
 import { runInTransaction } from 'src/helper/transaction.helper';
 import { safeError } from 'src/helper/safe-error.helper';
+import { sendSms } from 'src/helper/sms.helper';
 
 @Injectable()
 export class TestDriveRegistrationService {
@@ -17,7 +18,7 @@ export class TestDriveRegistrationService {
     @InjectRepository(TestDriveRegistration)
     private readonly testDriveRegistrationRepository: Repository<TestDriveRegistration>,
   ) {}
-  create(createTestDriveRegistrationDto: CreateTestDriveRegistrationDto) {
+  async create(createTestDriveRegistrationDto: CreateTestDriveRegistrationDto) {
     const testDriveRegistration = new TestDriveRegistration();
     testDriveRegistration.firstName = createTestDriveRegistrationDto.firstName;
     testDriveRegistration.lastName = createTestDriveRegistrationDto.lastName;
@@ -29,6 +30,10 @@ export class TestDriveRegistrationService {
     testDriveRegistration.location = createTestDriveRegistrationDto.location;
     testDriveRegistration.additionalInfo =
       createTestDriveRegistrationDto.additionalInfo;
+    await sendSms(
+      testDriveRegistration.phone,
+      `Dear ${testDriveRegistration.firstName}, Thank You Registering for a Test Drive on Drive Skywell 2025 NepalToEurope. We will contact you for further process!-Skywell Nepal`,
+    );
     return runInTransaction((queryRunner) =>
       queryRunner.manager.save(TestDriveRegistration, testDriveRegistration),
     );
