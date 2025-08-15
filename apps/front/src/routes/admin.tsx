@@ -25,10 +25,10 @@ function RouteComponent() {
     return <Navigate to="/login" />;
   }
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen">
+    <SidebarProvider className="">
+      <div className="flex min-h-screen  w-full">
         <AdminSidebar />
-        <main className="flex-1 overflow-x-auto">
+        <main className=" w-full  bg-blue">
           <Outlet />
         </main>
       </div>

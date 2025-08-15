@@ -8,6 +8,8 @@ import { IamModule } from './iam/iam.module';
 import { UserModule } from './user/user.module';
 import { TestDriveRegistrationModule } from './test-drive-registration/test-drive-registration.module';
 import { VisitOtpModule } from './visit-otp/visit-otp.module';
+import { CustomerModule } from './customer/customer.module';
+import { EnquiryModule } from './enquiry/enquiry.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { VisitOtpModule } from './visit-otp/visit-otp.module';
     IamModule,
     VisitOtpModule,
     TestDriveRegistrationModule,
+    CustomerModule,
+    EnquiryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

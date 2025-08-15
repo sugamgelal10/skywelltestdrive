@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Car } from "lucide-react";
+import { Car, MessageCircle } from "lucide-react";
 
 import {
   Sidebar,
@@ -61,6 +61,25 @@ export function AdminSidebar() {
                   <Link to="/admin/registrations">
                     <Car className="mr-2 h-4 w-4" />
                     <span>Registrations</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <Separator className="my-2" />
+        <SidebarGroup>
+          <SidebarGroupLabel>Enquiry</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/admin/enquiry"}
+                >
+                  <Link to="/admin/enquiry">
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    <span>Enquiry</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
