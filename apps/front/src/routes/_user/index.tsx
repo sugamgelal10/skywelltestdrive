@@ -3,6 +3,7 @@ import TestDriveForm from "@/components/test-drive-form";
 import banner from "@/banner.gif";
 
 export const Route = createFileRoute("/_user/")({
+  
   component: App,
 });
 

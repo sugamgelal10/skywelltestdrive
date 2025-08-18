@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_user")({
 
 function RouteComponent() {
   const location = useLocation();
+  
   return (
     <div>
       <div className="py-2 te shadow-md mb-1 px-8 font-extrabold text-md md:text-xl text-primary">
