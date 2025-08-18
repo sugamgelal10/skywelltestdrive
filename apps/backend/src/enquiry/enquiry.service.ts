@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Enquiry } from './entities/enquiry.entity';
 import { Repository } from 'typeorm';
 import { Customer } from 'src/customer/entities/customer.entity';
+import { EmailService } from 'src/helper/mailing/mailing.service';
+import { emailOnContactTemplate } from 'src/helper/mailing/html-as-constants/automatic-email-on-contact-us';
 
 @Injectable()
 export class EnquiryService {
@@ -13,6 +15,7 @@ export class EnquiryService {
     private readonly enquiryRepository: Repository<Enquiry>,
     @InjectRepository(Customer)
     private readonly customerRepository: Repository<Customer>,
+    private readonly emailService: EmailService,
   ) {}
 
   async preloadCustomer(customerData: Partial<Customer>): Promise<Customer> {
@@ -37,7 +40,14 @@ export class EnquiryService {
       enquiryType: createEnquiryDto.enquiryType,
       customer,
     });
+
     await this.enquiryRepository.save(enquiry);
+    await this.emailService.sendMail(
+      createEnquiryDto.email,
+      `Greetings from Skywell Nepal`,
+      emailOnContactTemplate,
+      {},
+    );
     return 'New Enquiry Addedp';
   }
 

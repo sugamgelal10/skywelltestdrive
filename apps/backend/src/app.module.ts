@@ -10,6 +10,7 @@ import { TestDriveRegistrationModule } from './test-drive-registration/test-driv
 import { VisitOtpModule } from './visit-otp/visit-otp.module';
 import { CustomerModule } from './customer/customer.module';
 import { EnquiryModule } from './enquiry/enquiry.module';
+import { MailingModule } from './helper/mailing/mailing.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { EnquiryModule } from './enquiry/enquiry.module';
     TestDriveRegistrationModule,
     CustomerModule,
     EnquiryModule,
+    MailingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
