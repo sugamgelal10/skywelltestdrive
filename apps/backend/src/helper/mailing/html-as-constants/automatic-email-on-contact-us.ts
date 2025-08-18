@@ -19,7 +19,7 @@ export const emailOnContactTemplate = `<!DOCTYPE html>
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .header {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      background: linear-gradient(135deg, #2596be, #1a6b8a);
       color: white;
       padding: 30px 20px;
       text-align: center;
@@ -40,7 +40,7 @@ export const emailOnContactTemplate = `<!DOCTYPE html>
     }
     .greeting {
       font-size: 22px;
-      color: #c0392b;
+      color: #1a6b8a;
       margin-bottom: 20px;
       text-align: center;
     }
@@ -52,7 +52,7 @@ export const emailOnContactTemplate = `<!DOCTYPE html>
     }
     .info-box {
       background: #fff;
-      border: 2px solid #e74c3c;
+      border: 2px solid #2596be;
       border-radius: 8px;
       padding: 20px;
       margin: 25px 0;
@@ -61,20 +61,20 @@ export const emailOnContactTemplate = `<!DOCTYPE html>
     .info-title {
       font-size: 18px;
       font-weight: bold;
-      color: #c0392b;
+      color: #1a6b8a;
       margin-bottom: 15px;
     }
     .contact-info {
       margin: 10px 0;
     }
     .contact-info strong {
-      color: #e74c3c;
+      color: #2596be;
       display: inline-block;
       min-width: 80px;
     }
     .btn {
       display: inline-block;
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      background: linear-gradient(135deg, #2596be, #1a6b8a);
       color: white;
       padding: 12px 25px;
       text-decoration: none;
@@ -87,7 +87,7 @@ export const emailOnContactTemplate = `<!DOCTYPE html>
       transform: translateY(-2px);
     }
     .footer {
-      background: #c0392b;
+      background: #1a6b8a;
       color: white;
       padding: 25px;
       text-align: center;
@@ -112,45 +112,44 @@ export const emailOnContactTemplate = `<!DOCTYPE html>
 <body>
   <div class="email-container">
     <div class="header">
-      <div class="logo">Skywell Motors</div>
-      <div class="tagline">Drive Innovation • Experience Excellence</div>
+      <div class="logo">SKYWELL</div>
+      <div class="tagline">Drive Home Real SUV</div>
     </div>
     
     <div class="content">
       <div class="greeting">Thank You for Contacting Us!</div>
       
       <div class="message">
-        We’ve received your enquiry and greatly appreciate your interest in Skywell Motors. 
-        Our team will get back to you within 24 hours.
+        We’ve received your enquiry and greatly appreciate your interest in the Skywell EV. 
+        Our team will get back to you shortly.
       </div>
       
       <div class="info-box">
         <div class="info-title">📩 Contact Information</div>
         <div class="contact-info">
-          <strong>Email:</strong> info.skywell@gmail.com
+          <strong>Phone:</strong> 9701010105, 9701010127
         </div>
         <div class="contact-info">
-          <strong>Website:</strong> <a href="https://gmotors.com.np">gmotors.com.np</a>
+          <strong>Website:</strong> <a href="https://gmotors.com.np" target="_blank">www.gmotors.com.np</a>
         </div>
         <div class="contact-info">
-          <strong>Services:</strong> Car Sales • Test Drives • Customer Support
+          <strong>Showrooms:</strong> Naxal-Kathmandu, RadheRadhe-Bhaktapur, Itahari-Sunsari, Birtamode-Jhapa, Chitwan, Pokhara
         </div>
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
         <p>Meanwhile, explore our latest car models online!</p>
-        <a href="https://gmotors.com.np" class="btn">Visit Our Website</a>
+        <a href="https://gmotors.com.np" class="btn" target="_blank">Visit Our Website</a>
       </div>
     </div>
     
     <div class="footer">
       <div>
-        <strong>Skywell Motors Pvt. Ltd.</strong><br>
-        Driving Nepal Forward
+        <strong>G. MOTORS PVT. LTD.</strong><br>
+        Authorized Importer & Distributer for Nepal
       </div>
       <div class="social-links">
-        <a href="mailto:info.skywell@gmail.com">Email Us</a> |
-        <a href="https://gmotors.com.np">Website</a>
+        <a href="https://gmotors.com.np" target="_blank">Website</a>
       </div>
       <div class="footer-note">
         This is an automated message. Please do not reply directly.<br>
