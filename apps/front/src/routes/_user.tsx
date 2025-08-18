@@ -1,11 +1,18 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useLocation,
+} from "@tanstack/react-router";
 import logo from "@/logo.png";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_user")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const location = useLocation();
   return (
     <div>
       <div className="py-2 te shadow-md mb-1 px-8 font-extrabold text-md md:text-xl text-primary">
@@ -19,10 +26,20 @@ function RouteComponent() {
             {/* Test Drive */}
           </div>
           <div className="flex items-center gap-2 font-semibold text-black">
-            <Link to="/" className="hover:text-primary">
+            <Link
+              to="/"
+              className={cn("hover:text-primary", {
+                "text-primary": location.pathname === "/",
+              })}
+            >
               Test Drive
             </Link>
-            <Link to="/enquiry" className="hover:text-primary">
+            <Link
+              to="/enquiry"
+              className={cn("hover:text-primary", {
+                "text-primary": location.pathname === "/enquiry",
+              })}
+            >
               Enquiry
             </Link>
           </div>

@@ -34,6 +34,7 @@ export class EnquiryService {
     const enquiry = this.enquiryRepository.create({
       model: createEnquiryDto.model,
       remarks: createEnquiryDto.remarks,
+      enquiryType: createEnquiryDto.enquiryType,
       customer,
     });
     await this.enquiryRepository.save(enquiry);

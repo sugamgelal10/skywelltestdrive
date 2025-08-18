@@ -7,7 +7,6 @@ export default function Header() {
         <div className="px-2 font-bold">
           <Link to="/">Home</Link>
         </div>
-        
       </nav>
     </header>
   );

@@ -12,6 +12,9 @@ export class Enquiry {
   @Column({ nullable: true })
   remarks?: string;
 
+  @Column({ nullable: true })
+  enquiryType: string;
+
   @ManyToOne(() => Customer, (customer) => customer.enquiry)
   customer: Customer;
 }

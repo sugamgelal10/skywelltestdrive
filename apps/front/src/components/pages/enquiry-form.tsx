@@ -39,6 +39,7 @@ const formSchema = z.object({
       "Please enter a valid phone number (10-15 digits, may include + prefix).",
   }),
   model: z.string().min(1, "Model is Required"),
+  enquiryType: z.string().min(1, "Enquiry Type is Required"),
   remarks: z.string().optional(),
 });
 
@@ -54,6 +55,7 @@ export default function EnquiryForm() {
           phone: form.getValues("phone"),
           model: form.getValues("model"),
           address: form.getValues("address"),
+          enquiryType: form.getValues("enquiryType"),
           remarks: form.getValues("remarks"),
         },
       });
@@ -78,6 +80,7 @@ export default function EnquiryForm() {
       remarks: "",
       address: "",
       model: "",
+      enquiryType: "",
     },
   });
 
@@ -95,6 +98,12 @@ export default function EnquiryForm() {
     be11520: "BE11 520",
     et5620: "ET5 620",
     skywellQ: "Skywell Q",
+  };
+  const enquiryType = {
+    enquiry: "Enquiry",
+    testDrive: "Test Drive",
+    booking: "Booking",
+    other: "Other",
   };
   return (
     <div className="w-full min-h-screen bg-slate-50">
@@ -209,6 +218,36 @@ export default function EnquiryForm() {
                     )}
                   />
                 </div>
+                <FormField
+                  control={form.control}
+                  name="enquiryType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Intrested For</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue
+                              placeholder="Select a Instrested For"
+                              className=""
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="w-full">
+                          {Object.entries(enquiryType).map(([value, label]) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={form.control}
