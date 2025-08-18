@@ -94,6 +94,7 @@ export default function EnquiryForm() {
     be11410: "BE11 410",
     be11520: "BE11 520",
     et5620: "ET5 620",
+    skywellQ: "Skywell Q",
   };
   return (
     <div className="w-full min-h-screen bg-slate-50">

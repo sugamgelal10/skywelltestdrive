@@ -13,7 +13,7 @@ const Enquiry = () => {
         </h1>
         <div className="max-w-4xl container  mx-auto">
           <h1 className="text-xl  text-center font-bold mt-2">
-            You Have any questions about Skyellwell Nepal?{" "}
+            You Have any questions about Skywell Nepal?{" "}
             <span className="text-primary">No Worries! Drop us a message</span>
           </h1>
           <p className="text-sm text-gray-600 mb-6 text-center">
