@@ -286,7 +286,7 @@ export function EnquiryTable() {
               <div className="mb-4 p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2">
                   <CarIcon className="h-4 w-4 text-gray-500" />
-                  <span>Vehicle: {selectedRegistration?.vehicle}</span>
+                  <span>Vehicle: {selectedRegistration?.model}</span>
                 </div>
               </div>
 
