@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Fetch } from "@/lib/fetcher";
-import poster from "@/poster.jpg";
+import poster2 from "@/poster-2.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { CheckCircle } from "lucide-react";
@@ -260,7 +260,7 @@ export default function EnquiryForm() {
 
           {/* Placeholder image - in a real app you would use a real image here */}
           <img
-            src={poster}
+            src={poster2}
             alt="Luxury car on a scenic road"
             className="object-cover w-full h-full"
           />
