@@ -120,8 +120,7 @@ export const emailOnContactTemplate = `<!DOCTYPE html>
       <div class="greeting">Thank You for Contacting Us!</div>
       
       <div class="message">
-        We’ve received your enquiry and greatly appreciate your interest in the Skywell EV. 
-        Our team will get back to you shortly.
+        We appreciate your valued enquiry for our scheme Europe Tour for Family and Diamond Necklace during NADA booking and chance to win a ROLEX watch from LUCKY DRAW. Kindly Book your loved color and model of SKYWELL, Take a Delivery of fresh 2025 models from our Showrooms
       </div>
       
       <div class="info-box">
