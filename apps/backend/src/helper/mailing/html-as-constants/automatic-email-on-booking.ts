@@ -120,7 +120,7 @@ export const emailOnBookingTemplate = `<!DOCTYPE html>
       <div class="greeting">Thank You for Booking Skywell!</div>
       
       <div class="message">
-        We appreciate your valued booking and You are eligible now for our scheme Europe Tour for Family and Diamond Necklace during NADA booking and chance to win a ROLEX watch from LUCKY DRAW. 
+        We appreciate your valued booking and You are eligible now for our scheme Europe Tour for Family and Diamond Necklace during NADA booking and chance to win a ROLEX watch from LUCKY DRAW. We will verify your booking and get back to you as soon as possible.
       </div>
       
       <div class="info-box">
