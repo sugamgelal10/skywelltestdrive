@@ -1,3 +1,4 @@
+
 import { Customer } from 'src/customer/entities/customer.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -14,6 +15,13 @@ export class Enquiry {
 
   @Column({ nullable: true })
   enquiryType: string;
+
+  @Column({ nullable: true })
+  
+  isPaid: boolean;
+
+  @Column({ nullable: true })
+  so: string;
 
   @ManyToOne(() => Customer, (customer) => customer.enquiry)
   customer: Customer;

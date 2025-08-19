@@ -1,4 +1,5 @@
-import { IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateEnquiryDto {
   @IsString()
@@ -25,4 +26,26 @@ export class CreateEnquiryDto {
   @IsString()
   @IsOptional()
   enquiryType: string;
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value === '' || value === undefined || value === null) {
+      return undefined;
+    }
+    if (typeof value === 'string') {
+      if (value.toLowerCase() === 'false') {
+        return false;
+      }
+      if (value.toLowerCase() === 'true') {
+        return true;
+      }
+    }
+    return value;
+  })
+  isPaid: boolean;
+
+  @IsString()
+  @IsOptional()
+  so: string;
 }

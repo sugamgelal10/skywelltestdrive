@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { Customer } from 'src/customer/entities/customer.entity';
 import { EmailService } from 'src/helper/mailing/mailing.service';
 import { emailOnContactTemplate } from 'src/helper/mailing/html-as-constants/automatic-email-on-contact-us';
+import { emailOnBookingTemplate } from 'src/helper/mailing/html-as-constants/automatic-email-on-booking';
 
 @Injectable()
 export class EnquiryService {
@@ -38,6 +39,7 @@ export class EnquiryService {
       model: createEnquiryDto.model,
       remarks: createEnquiryDto.remarks,
       enquiryType: createEnquiryDto.enquiryType,
+      isPaid: createEnquiryDto.isPaid,
       customer,
     });
 
@@ -45,7 +47,7 @@ export class EnquiryService {
     await this.emailService.sendMail(
       createEnquiryDto.email,
       `Greetings from Skywell Nepal`,
-      emailOnContactTemplate,
+      createEnquiryDto.isPaid ? emailOnBookingTemplate : emailOnContactTemplate,
       {},
     );
     return 'New Enquiry Addedp';

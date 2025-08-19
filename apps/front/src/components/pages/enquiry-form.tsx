@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import qr from "@/bankqr.jpeg";
 
 import {
   Select,
@@ -25,6 +26,8 @@ import { CheckCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Checkbox } from "../ui/checkbox";
 
 const phoneRegex = /^\+?[0-9]{10,15}$/;
 
@@ -41,6 +44,8 @@ const formSchema = z.object({
   model: z.string().min(1, "Model is Required"),
   enquiryType: z.string().min(1, "Enquiry Type is Required"),
   remarks: z.string().optional(),
+  isPaid: z.boolean().optional(),
+  so: z.string().optional(),
 });
 
 export default function EnquiryForm() {
@@ -57,6 +62,8 @@ export default function EnquiryForm() {
           address: form.getValues("address"),
           enquiryType: form.getValues("enquiryType"),
           remarks: form.getValues("remarks"),
+          isPaid: form.getValues("isPaid"),
+          so: form.getValues("so"),
         },
       });
     },
@@ -81,6 +88,8 @@ export default function EnquiryForm() {
       address: "",
       model: "",
       enquiryType: "",
+      isPaid: false,
+      so: "",
     },
   });
 
@@ -241,6 +250,19 @@ export default function EnquiryForm() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="so"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Sales Officer</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={form.control}
@@ -260,7 +282,45 @@ export default function EnquiryForm() {
                     </FormItem>
                   )}
                 />
-
+                <div className="w-full flex">
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button type="button" className="w-full">
+                        Open QR
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <img src={qr} />
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="isPaid"
+                  render={({ field }) => (
+                    <FormItem className="flex">
+                      <FormLabel className="">Is Paid</FormLabel>
+                      <Checkbox
+                        onCheckedChange={field.onChange}
+                        checked={field.value}
+                        className="border border-black"
+                      />
+                      {/* <Checkbox
+                        checked={field.value}
+                        onCheckedChange={(checked) => {
+                          return checked
+                            ? field.onChange([...field.value, item.id])
+                            : field.onChange(
+                                field.value?.filter(
+                                  (value) => value !== item.id
+                                )
+                              );
+                        }}
+                      /> */}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <div className="pt-4">
                   <Button type="submit" className="w-full">
                     Submit Registration
