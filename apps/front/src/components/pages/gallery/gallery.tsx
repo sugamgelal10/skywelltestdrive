@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import PhotoGallery from "./photo-gallery";
+// import PhotoGallery from "./photo-gallery";
 
 interface VideoGalleryProps {
   videos: string[];
