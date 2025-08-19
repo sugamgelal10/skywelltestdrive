@@ -128,7 +128,7 @@ export default function EnquiryForm() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Full Name Name</FormLabel>
+                      <FormLabel>Full Name</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -145,10 +145,7 @@ export default function EnquiryForm() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input
-                            type="email"
-                            {...field}
-                          />
+                          <Input type="email" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -176,9 +173,7 @@ export default function EnquiryForm() {
                       <FormItem>
                         <FormLabel>Address</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                          />
+                          <Input {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
