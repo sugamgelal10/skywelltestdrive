@@ -20,6 +20,7 @@ import { Route as AdminRegistrationsImport } from './routes/admin/registrations'
 import { Route as AdminEnquiryImport } from './routes/admin/enquiry'
 import { Route as UserVerifyImport } from './routes/_user/verify'
 import { Route as UserSucessImport } from './routes/_user/sucess'
+import { Route as UserGalleryImport } from './routes/_user/gallery'
 import { Route as UserEnquiryImport } from './routes/_user/enquiry'
 
 // Create/Update Routes
@@ -77,6 +78,12 @@ const UserSucessRoute = UserSucessImport.update({
   getParentRoute: () => UserRoute,
 } as any)
 
+const UserGalleryRoute = UserGalleryImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => UserRoute,
+} as any)
+
 const UserEnquiryRoute = UserEnquiryImport.update({
   id: '/enquiry',
   path: '/enquiry',
@@ -113,6 +120,13 @@ declare module '@tanstack/react-router' {
       path: '/enquiry'
       fullPath: '/enquiry'
       preLoaderRoute: typeof UserEnquiryImport
+      parentRoute: typeof UserImport
+    }
+    '/_user/gallery': {
+      id: '/_user/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof UserGalleryImport
       parentRoute: typeof UserImport
     }
     '/_user/sucess': {
@@ -164,6 +178,7 @@ declare module '@tanstack/react-router' {
 
 interface UserRouteChildren {
   UserEnquiryRoute: typeof UserEnquiryRoute
+  UserGalleryRoute: typeof UserGalleryRoute
   UserSucessRoute: typeof UserSucessRoute
   UserVerifyRoute: typeof UserVerifyRoute
   UserIndexRoute: typeof UserIndexRoute
@@ -171,6 +186,7 @@ interface UserRouteChildren {
 
 const UserRouteChildren: UserRouteChildren = {
   UserEnquiryRoute: UserEnquiryRoute,
+  UserGalleryRoute: UserGalleryRoute,
   UserSucessRoute: UserSucessRoute,
   UserVerifyRoute: UserVerifyRoute,
   UserIndexRoute: UserIndexRoute,
@@ -197,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/enquiry': typeof UserEnquiryRoute
+  '/gallery': typeof UserGalleryRoute
   '/sucess': typeof UserSucessRoute
   '/verify': typeof UserVerifyRoute
   '/admin/enquiry': typeof AdminEnquiryRoute
@@ -208,6 +225,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/enquiry': typeof UserEnquiryRoute
+  '/gallery': typeof UserGalleryRoute
   '/sucess': typeof UserSucessRoute
   '/verify': typeof UserVerifyRoute
   '/admin/enquiry': typeof AdminEnquiryRoute
@@ -222,6 +240,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/_user/enquiry': typeof UserEnquiryRoute
+  '/_user/gallery': typeof UserGalleryRoute
   '/_user/sucess': typeof UserSucessRoute
   '/_user/verify': typeof UserVerifyRoute
   '/admin/enquiry': typeof AdminEnquiryRoute
@@ -237,6 +256,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/enquiry'
+    | '/gallery'
     | '/sucess'
     | '/verify'
     | '/admin/enquiry'
@@ -247,6 +267,7 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/enquiry'
+    | '/gallery'
     | '/sucess'
     | '/verify'
     | '/admin/enquiry'
@@ -259,6 +280,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/_user/enquiry'
+    | '/_user/gallery'
     | '/_user/sucess'
     | '/_user/verify'
     | '/admin/enquiry'
@@ -299,6 +321,7 @@ export const routeTree = rootRoute
       "filePath": "_user.tsx",
       "children": [
         "/_user/enquiry",
+        "/_user/gallery",
         "/_user/sucess",
         "/_user/verify",
         "/_user/"
@@ -317,6 +340,10 @@ export const routeTree = rootRoute
     },
     "/_user/enquiry": {
       "filePath": "_user/enquiry.tsx",
+      "parent": "/_user"
+    },
+    "/_user/gallery": {
+      "filePath": "_user/gallery.tsx",
       "parent": "/_user"
     },
     "/_user/sucess": {

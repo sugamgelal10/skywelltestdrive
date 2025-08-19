@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_user")({
 
 function RouteComponent() {
   const location = useLocation();
-  
+
   return (
     <div>
       <div className="py-2 te shadow-md mb-1 px-8 font-extrabold text-md md:text-xl text-primary">
@@ -35,6 +35,7 @@ function RouteComponent() {
             >
               Test Drive
             </Link>
+
             <Link
               to="/enquiry"
               className={cn("hover:text-primary", {
@@ -42,6 +43,14 @@ function RouteComponent() {
               })}
             >
               Enquiry
+            </Link>
+            <Link
+              to="/gallery"
+              className={cn("hover:text-primary", {
+                "text-primary": location.pathname === "/gallery",
+              })}
+            >
+              Gallery
             </Link>
           </div>
         </div>
