@@ -43,6 +43,7 @@ export class EnquiryService {
       remarks: createEnquiryDto.remarks,
       enquiryType: createEnquiryDto.enquiryType,
       isPaid: createEnquiryDto.isPaid,
+      so: createEnquiryDto.so,
       customer,
     });
 
