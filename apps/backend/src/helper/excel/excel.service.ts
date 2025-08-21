@@ -3,7 +3,7 @@ import * as ExcelJS from 'exceljs';
 
 @Injectable()
 export class ExcelService {
-  async createExcelFile(data: any[]): Promise<Buffer> {
+  async createExcelFile(data: any[]): Promise<ArrayBuffer> {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
     worksheet.columns = [
@@ -20,6 +20,6 @@ export class ExcelService {
     worksheet.addRows(data);
 
     const buffer = await workbook.xlsx.writeBuffer();
-    return buffer as Buffer;
+    return buffer as ArrayBuffer;
   }
 }

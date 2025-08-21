@@ -37,7 +37,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Fetch } from "@/lib/fetcher";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export function EnquiryTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -55,6 +56,28 @@ export function EnquiryTable() {
         url: "/enquiry",
         method: "GET",
       }),
+  });
+
+  const exportEnquiry = useMutation({
+    mutationKey: ["export-enquiry"],
+    mutationFn: async () => {
+      return await Fetch<Blob>({
+        url: "/enquiry/export",
+        responseType: "blob",
+        method: "GET",
+      })
+        .then((res) => {
+          const url = URL.createObjectURL(res);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "enquiry.xlsx";
+          link.click();
+          URL.revokeObjectURL(url);
+        })
+        .catch((err) => {
+          toast.error(err?.message);
+        });
+    },
   });
 
   // Define the columns for our table
@@ -172,6 +195,15 @@ export function EnquiryTable() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
         />
+        <div>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => exportEnquiry.mutate()}
+          >
+            {exportEnquiry.isPending ? "Exporting..." : "Export Excel"}
+          </Button>
+        </div>
       </div>
 
       <div className="rounded-md border">
