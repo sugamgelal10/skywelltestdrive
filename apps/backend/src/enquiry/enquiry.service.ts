@@ -35,6 +35,7 @@ export class EnquiryService {
       email: createEnquiryDto.email,
       address: createEnquiryDto.address,
       phone: createEnquiryDto.phone,
+      orgnaization: createEnquiryDto.orgnaization,
     };
     const customer = await this.preloadCustomer(customerData);
     const enquiry = this.enquiryRepository.create({
@@ -92,6 +93,7 @@ export class EnquiryService {
       enquiryType: enquiry.enquiryType,
       isPaid: enquiry.isPaid,
       remarks: enquiry.remarks,
+      salesOfficer: enquiry.so,
     }));
 
     return await this.excelService.createExcelFile(data);

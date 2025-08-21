@@ -46,6 +46,7 @@ const formSchema = z.object({
   remarks: z.string().optional(),
   isPaid: z.boolean().optional(),
   so: z.string().optional(),
+  orgnaization: z.string().optional(),
 });
 
 export default function EnquiryForm() {
@@ -90,6 +91,7 @@ export default function EnquiryForm() {
       enquiryType: "",
       isPaid: false,
       so: "",
+      orgnaization: "",
     },
   });
 
@@ -138,6 +140,19 @@ export default function EnquiryForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="orgnaization"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Organization Name</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>

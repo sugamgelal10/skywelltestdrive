@@ -10,6 +10,9 @@ export class Customer {
   name: string;
 
   @Column({ nullable: true })
+  orgnaization?: string;
+
+  @Column({ nullable: true })
   email?: string;
 
   @Column()

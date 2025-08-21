@@ -14,6 +14,7 @@ export class ExcelService {
       { header: 'Address', key: 'address', width: 30 },
       { header: 'Model', key: 'model', width: 20 },
       { header: 'Enquiry Type', key: 'enquiryType', width: 20 },
+      { header: 'Sales Officer', key: 'salesOfficer', width: 20 },
       { header: 'Is Paid', key: 'isPaid', width: 20 },
       { header: 'Remarks', key: 'remarks', width: 40 },
     ];

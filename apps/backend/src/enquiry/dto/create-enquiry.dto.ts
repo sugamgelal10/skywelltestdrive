@@ -21,6 +21,10 @@ export class CreateEnquiryDto {
 
   @IsString()
   @IsOptional()
+  orgnaization: string;
+
+  @IsString()
+  @IsOptional()
   address: string;
 
   @IsString()
