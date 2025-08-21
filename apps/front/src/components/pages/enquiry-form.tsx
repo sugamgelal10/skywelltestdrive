@@ -90,13 +90,19 @@ export default function EnquiryForm() {
       model: "",
       enquiryType: "",
       isPaid: false,
-      so: "",
       orgnaization: "",
     },
   });
 
   const resetForm = () => {
-    form.reset();
+    form.setValue("name", "");
+    form.setValue("email", "");
+    form.setValue("phone", "");
+    form.setValue("address", "");
+    form.setValue("enquiryType", "");
+    form.setValue("remarks", "");
+    form.setValue("isPaid", false);
+    form.setValue("orgnaization", "");
     form.setValue("model", "");
   };
 
