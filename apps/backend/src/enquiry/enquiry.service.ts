@@ -8,6 +8,7 @@ import { Customer } from 'src/customer/entities/customer.entity';
 import { EmailService } from 'src/helper/mailing/mailing.service';
 import { emailOnContactTemplate } from 'src/helper/mailing/html-as-constants/automatic-email-on-contact-us';
 import { emailOnBookingTemplate } from 'src/helper/mailing/html-as-constants/automatic-email-on-booking';
+import { ExcelService } from 'src/helper/excel/excel.service';
 
 @Injectable()
 export class EnquiryService {
@@ -17,6 +18,7 @@ export class EnquiryService {
     @InjectRepository(Customer)
     private readonly customerRepository: Repository<Customer>,
     private readonly emailService: EmailService,
+    private readonly excelService: ExcelService,
   ) {}
 
   async preloadCustomer(customerData: Partial<Customer>): Promise<Customer> {
@@ -74,5 +76,24 @@ export class EnquiryService {
 
   remove(id: number) {
     return `This action removes a #${id} enquiry`;
+  }
+
+  async export() {
+    const enquiry = await this.enquiryRepository.find({
+      relations: ['customer'],
+    });
+    const data = enquiry.map((enquiry, idx: number) => ({
+      SN: idx + 1,
+      name: enquiry.customer.name,
+      phone: enquiry.customer.phone,
+      email: enquiry.customer.email,
+      address: enquiry.customer.address,
+      model: enquiry.model,
+      enquiryType: enquiry.enquiryType,
+      isPaid: enquiry.isPaid,
+      remarks: enquiry.remarks,
+    }));
+
+    return await this.excelService.createExcelFile(data);
   }
 }

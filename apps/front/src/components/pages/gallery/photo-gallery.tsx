@@ -17,8 +17,6 @@ const PhotoGallery = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  console.log(photos?.[0]?.url);
-
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
@@ -39,7 +37,6 @@ const PhotoGallery = () => {
             }));
 
           setPhotos(images);
-          console.log(images);
         }
       } catch (err) {
         console.error("Error fetching Drive photos:", err);

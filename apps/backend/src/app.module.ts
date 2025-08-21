@@ -10,6 +10,8 @@ import { TestDriveRegistrationModule } from './test-drive-registration/test-driv
 import { VisitOtpModule } from './visit-otp/visit-otp.module';
 import { CustomerModule } from './customer/customer.module';
 import { EnquiryModule } from './enquiry/enquiry.module';
+
+import { ExcelModule } from './helper/excel/excel.module';
 import { MailingModule } from './helper/mailing/mailing.module';
 
 @Module({
@@ -37,6 +39,7 @@ import { MailingModule } from './helper/mailing/mailing.module';
     CustomerModule,
     EnquiryModule,
     MailingModule,
+    ExcelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

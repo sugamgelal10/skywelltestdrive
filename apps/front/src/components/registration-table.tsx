@@ -429,7 +429,6 @@ export function RegistrationsTable() {
                   control={form.control}
                   name="date"
                   render={({ field }) => {
-                    console.log(field);
                     return (
                       <FormItem>
                         <FormLabel>Test Drive Date</FormLabel>

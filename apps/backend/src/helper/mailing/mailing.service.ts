@@ -18,7 +18,6 @@ export class EmailService {
         finalizedHTML = finalizedHTML.replace(placeholder, context[key]);
       });
     }
-    console.log('to', to);
 
     await this.mailerService.sendMail({
       to,
