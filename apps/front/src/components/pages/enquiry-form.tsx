@@ -48,6 +48,7 @@ const formSchema = z.object({
   so: z.string().optional(),
   orgnaization: z.string().optional(),
   date: z.string().optional(),
+  clientStatus: z.string().optional(),
 });
 
 export default function EnquiryForm() {
@@ -67,6 +68,7 @@ export default function EnquiryForm() {
           isPaid: form.getValues("isPaid"),
           so: form.getValues("so"),
           date: form.getValues("date"),
+          clientStatus: form.getValues("clientStatus"),
         },
       });
     },
@@ -94,6 +96,7 @@ export default function EnquiryForm() {
       isPaid: false,
       orgnaization: "",
       date: "",
+      clientStatus: "",
     },
   });
 
@@ -108,6 +111,7 @@ export default function EnquiryForm() {
     form.setValue("orgnaization", "");
     form.setValue("model", "");
     form.setValue("date", "");
+    form.setValue("clientStatus", "");
   };
 
   function onTestSubmit() {
@@ -125,6 +129,9 @@ export default function EnquiryForm() {
     testDrive: "Test Drive",
     booking: "Booking",
     other: "Other",
+  };
+  const clientStatus = {
+    hot: "Hot",
   };
   return (
     <div className="w-full min-h-screen bg-slate-50">
@@ -245,6 +252,38 @@ export default function EnquiryForm() {
                     )}
                   />
                 </div>
+                <FormField
+                  control={form.control}
+                  name="clientStatus"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Client Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue
+                              placeholder="Select a Client Status"
+                              className=""
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="w-full">
+                          {Object.entries(clientStatus).map(
+                            ([value, label]) => (
+                              <SelectItem key={value} value={value}>
+                                {label}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="enquiryType"

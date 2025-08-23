@@ -30,6 +30,9 @@ export class Enquiry {
   @Column({ nullable: true })
   so: string;
 
+  @Column({ nullable: true })
+  clientStatus: string;
+
   @ManyToOne(() => Customer, (customer) => customer.enquiry)
   customer: Customer;
 

@@ -71,6 +71,7 @@ export class EnquiryService {
       enquiryType: createEnquiryDto.enquiryType,
       isPaid: createEnquiryDto.isPaid,
       so: createEnquiryDto.so,
+      clientStatus: createEnquiryDto.clientStatus,
       customer,
       testDrive,
     });
