@@ -6,7 +6,7 @@ export class TestDrive {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   date: Date;
 
   @Column({ nullable: true })
