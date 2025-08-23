@@ -15,7 +15,7 @@ export class Delivered {
   @CreateDateColumn()
   date: Date;
 
-  @Column()
+  @Column({ nullable: true })
   token: string;
 
   @OneToOne(() => Enquiry, (enquiry) => enquiry.delivered)
