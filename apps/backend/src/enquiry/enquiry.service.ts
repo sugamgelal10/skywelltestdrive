@@ -155,6 +155,7 @@ export class EnquiryService {
       isPaid: enquiry.isPaid,
       remarks: enquiry.remarks,
       salesOfficer: enquiry.so,
+      clientStatus: enquiry.clientStatus,
     }));
 
     return await this.excelService.createExcelFile(data);

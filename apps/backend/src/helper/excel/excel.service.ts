@@ -17,6 +17,7 @@ export class ExcelService {
       { header: 'Sales Officer', key: 'salesOfficer', width: 20 },
       { header: 'Is Paid', key: 'isPaid', width: 20 },
       { header: 'Remarks', key: 'remarks', width: 40 },
+      { header: 'Client Status', key: 'clientStatus', width: 20 },
     ];
     worksheet.addRows(data);
 
