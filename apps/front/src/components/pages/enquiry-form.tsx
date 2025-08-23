@@ -47,6 +47,7 @@ const formSchema = z.object({
   isPaid: z.boolean().optional(),
   so: z.string().optional(),
   orgnaization: z.string().optional(),
+  date: z.string().optional(),
 });
 
 export default function EnquiryForm() {
@@ -65,6 +66,7 @@ export default function EnquiryForm() {
           remarks: form.getValues("remarks"),
           isPaid: form.getValues("isPaid"),
           so: form.getValues("so"),
+          date: form.getValues("date"),
         },
       });
     },
@@ -91,6 +93,7 @@ export default function EnquiryForm() {
       enquiryType: "",
       isPaid: false,
       orgnaization: "",
+      date: "",
     },
   });
 
@@ -104,6 +107,7 @@ export default function EnquiryForm() {
     form.setValue("isPaid", false);
     form.setValue("orgnaization", "");
     form.setValue("model", "");
+    form.setValue("date", "");
   };
 
   function onTestSubmit() {
@@ -271,6 +275,23 @@ export default function EnquiryForm() {
                     </FormItem>
                   )}
                 />
+                {form.watch("enquiryType") === "testDrive" && (
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Test Drive Date</FormLabel>
+
+                        <FormControl>
+                          <Input {...field} type="date" />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name="so"

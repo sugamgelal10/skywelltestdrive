@@ -1,6 +1,14 @@
-
 import { Customer } from 'src/customer/entities/customer.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { TestDrive } from './testdrive.entity';
+import { Delivered } from './delivered.entity';
 
 @Entity()
 export class Enquiry {
@@ -17,7 +25,6 @@ export class Enquiry {
   enquiryType: string;
 
   @Column({ nullable: true })
-  
   isPaid: boolean;
 
   @Column({ nullable: true })
@@ -25,4 +32,15 @@ export class Enquiry {
 
   @ManyToOne(() => Customer, (customer) => customer.enquiry)
   customer: Customer;
+
+  @OneToOne(() => TestDrive, (testDrive) => testDrive.enquiry)
+  @JoinColumn({ name: 'test_drive_id' })
+  testDrive: TestDrive;
+
+  @OneToOne(() => Delivered, (delivered) => delivered.enquiry, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'delivered_id' })
+  delivered: Delivered;
 }

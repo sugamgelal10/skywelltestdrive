@@ -31,6 +31,14 @@ export class CreateEnquiryDto {
   @IsOptional()
   enquiryType: string;
 
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => {
+    const date = new Date(value);
+    return isNaN(date.getTime()) ? null : new Date(value).toUTCString();
+  })
+  date: string;
+
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => {
